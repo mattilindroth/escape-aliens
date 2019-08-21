@@ -1,16 +1,18 @@
 using System;
 using escape_aliens.Engine.Interfaces;
+using escape_aliens.Engine;
 
 namespace escape_aliens
 {
     public class Game 
     {
-		private IRenderer _renderer;
+		
 		private ITimer _timer;
+		private Scene _scene;
 
-    	public Game(IRenderer renderer, ITimer timer) 
+    	public Game(Scene scene, ITimer timer) 
     	{
-			_renderer = renderer;
+			_scene = scene;
 			_timer = timer;
     	}
 
@@ -23,7 +25,7 @@ namespace escape_aliens
 			while(!quit) {
 				_timer.Start();
 
-				
+
 
 				ticks = _timer.GetElapsedTicks();
 				if(ticks < ticksPerFrame) {

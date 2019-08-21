@@ -11,7 +11,8 @@ namespace escape_aliens
             if(SDL.SDL_Init(SDL.SDL_INIT_VIDEO) < 0) {
                 Console.WriteLine("Unable to initialize SDL. Error: {0}", SDL.SDL_GetError());
             }
-            var game = new Game(new SDL2Renderer(), new SDL2Timer());
+            var scene = new Scene(new Engine.SDL2Renderer());
+            var game = new Game(scene, new SDL2Timer());
 
             game.Run(65);
             // var window = IntPtr.Zero;                        
