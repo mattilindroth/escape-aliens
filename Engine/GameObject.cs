@@ -10,7 +10,7 @@ namespace escape_aliens.Engine
         public GameObject() 
         {
             _components = new List<Component>();
-            this.AddComponent(new Math.Transformation2D());
+            this.AddComponent(new Transformation2D());
         }
 
         public void AddedToScene(Scene scene) 

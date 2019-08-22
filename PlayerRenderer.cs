@@ -1,6 +1,6 @@
 namespace escape_aliens.Engine 
 {
-    public class Renderer : Component 
+    public class PlayerRenderer : Component 
     {
         void Render(SceneRenderer sceneRenderer) 
         {

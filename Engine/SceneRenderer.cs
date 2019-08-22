@@ -5,6 +5,15 @@ namespace escape_aliens.Engine
 {
     public class SceneRenderer 
     {
+        private GameWindow _window;
+        private SDL.SDL_Surface _screenSurface;
+
+        public SceneRenderer(GameWindow window) 
+        {
+            _window = window;
+
+        }
+
         public void DrawCircle(double x, double y, double r) 
         {
 

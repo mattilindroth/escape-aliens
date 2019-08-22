@@ -11,10 +11,12 @@ namespace escape_aliens
             if(SDL.SDL_Init(SDL.SDL_INIT_VIDEO) < 0) {
                 Console.WriteLine("Unable to initialize SDL. Error: {0}", SDL.SDL_GetError());
             }
-            var scene = new Scene(new Engine.SDL2Renderer());
+            var window = new GameWindow();
+            Console.WriteLine("Window is {0}x{1}", window.ScreenWidth, window.ScreenHeight);
+            var scene = new Scene(new Engine.SceneRenderer());
             var game = new Game(scene, new SDL2Timer());
 
-            game.Run(65);
+            //game.Run(65);
             // var window = IntPtr.Zero;                        
             // window = SDL.SDL_CreateWindow(".NET Core SDL2-CS Tutorial",
             //     SDL.SDL_WINDOWPOS_CENTERED,
