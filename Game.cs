@@ -1,4 +1,5 @@
 using System;
+using SDL2;
 using escape_aliens.Engine.Interfaces;
 using escape_aliens.Engine;
 
@@ -24,8 +25,20 @@ namespace escape_aliens
 			
 			while(!quit) {
 				_timer.Start();
+				SDL.SDL_Event e;
+				while(SDL.SDL_PollEvent (out e)!= 0){
+					switch(e.type) {
+						case SDL.SDL_EventType.SDL_QUIT:
+							quit = true;
+							break;
+						case SDL.SDL_EventType.SDL_KEYDOWN:
+							if(e.key.keysym.sym == SDL.SDL_Keycode.SDLK_q)
+								quit = true;
+							break;
+					}
+				}
 
-
+				_scene.Render();
 
 				ticks = _timer.GetElapsedTicks();
 				if(ticks < ticksPerFrame) {

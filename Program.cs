@@ -16,7 +16,7 @@ namespace escape_aliens
             var scene = new Scene(new Engine.SceneRenderer(window));
             var game = new Game(scene, new SDL2Timer());
 
-            //game.Run(65);
+            game.Run(65);
             // var window = IntPtr.Zero;                        
             // window = SDL.SDL_CreateWindow(".NET Core SDL2-CS Tutorial",
             //     SDL.SDL_WINDOWPOS_CENTERED,
