@@ -27,11 +27,10 @@ namespace escape_aliens.Engine
 
         public void Render() 
         {
-            _renderer.SetColor(0,100,100, 255);
+            _renderer.SetColor(0,255,255, 255);
             _renderer.BeginRender();
-            _renderer.SetColor(100, 100, 100, 255);
-            _renderer.DrawLine(150, 300, 600, 360);
-            _renderer.DrawRectangle(100, 100, 300, 300);
+            
+            _renderer.EndRender();
         }
 
     }

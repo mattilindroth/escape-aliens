@@ -23,6 +23,10 @@ namespace escape_aliens
 			uint ticksPerFrame = FPSToTicksPerFrame(desiredFps);
 			uint ticks;
 			
+			Player player = new Player();
+			PlayerRenderer playerRenderer = new PlayerRenderer();
+			playerRenderer.AddedToGameObject(player);
+
 			while(!quit) {
 				_timer.Start();
 				SDL.SDL_Event e;

@@ -11,7 +11,7 @@ namespace escape_aliens.Engine
         public SceneRenderer(GameWindow window) 
         {
             _window = window;
-            _screenSurface = window.WindowSurface;
+            //_screenSurface = window.WindowSurface;
             _renderer = window.CreateRenderer();
         }
 
@@ -40,6 +40,11 @@ namespace escape_aliens.Engine
         public void BeginRender()
         {
             SDL.SDL_RenderClear(_renderer);
+        }
+
+        public void EndRender()
+        {
+            SDL.SDL_RenderPresent(_renderer);
         }
     }
 }
