@@ -20,7 +20,13 @@ namespace escape_aliens.Engine
             SDL.SDL_RenderDrawLine(_renderer, x1, y1, x2, y2);
         }
 
-        
+        public void DrawTexture(IntPtr texture, int x, int y, SDL.SDL_Rect renderRectangle, float angleRadians, SDL.SDL_RendererFlip flip) 
+        {
+            SDL.SDL_Point center;
+            center.x = (renderRectangle.x + renderRectangle.w) / 2;
+            center.y = (renderRectangle.y + renderRectangle.h) / 2;
+            SDL.SDL_RenderCopyEx(_renderer, texture, sourceRectangle, renderRectangle, angleRadians, center, flip);
+        }
 
         public void DrawRectangle(int x, int y, int width, int height)
         {
