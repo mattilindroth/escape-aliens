@@ -8,7 +8,7 @@ namespace escape_aliens.Engine
         private GameWindow _window;
         private IntPtr _screenSurface;
         private IntPtr _renderer; 
-        
+        private const double _rad2deg = (180.0f / System.Math.PI);
         public Renderer(GameWindow window) 
         {
             _window = window;
@@ -32,10 +32,11 @@ namespace escape_aliens.Engine
             SDL.SDL_Point center;
             SDL.SDL_Rect sourceRect = texture.SourceRectangle;
             SDL.SDL_Rect renderRect = texture.RenderRectangle;
-            center.x = (renderRect.x + renderRect.w) / 2;
-            center.y = (renderRect.y + renderRect.h) / 2;
+            double angleDegrees = transformation.RotationRadians * _rad2deg;
+            center.x = (renderRect.w) / 2;
+            center.y = (renderRect.h) / 2;
             SDL.SDL_RendererFlip renderFlip = flip ? SDL.SDL_RendererFlip.SDL_FLIP_HORIZONTAL : SDL.SDL_RendererFlip.SDL_FLIP_NONE;
-            SDL.SDL_RenderCopyEx(_renderer, texture.SDLTexture, ref sourceRect, ref renderRect, transformation.RotationRadians, ref center, renderFlip);
+            SDL.SDL_RenderCopyEx(_renderer, texture.SDLTexture, ref sourceRect, ref renderRect, angleDegrees, ref center, renderFlip);
         }
 
         public void DrawRectangle(int x, int y, int width, int height)
