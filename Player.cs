@@ -6,13 +6,11 @@ namespace escape_aliens
     public class Player : Engine.GameObject
     {
         
-        public void  RotateLeft(SDL.SDL_Keycode code, bool isDown) {
-            Console.WriteLine("Rotating left");
+        public void  RotateLeft(SDL.SDL_Scancode code, bool isDown) {
             this.Transformation.RotationRadians -= 0.1;
         }
 
-        public void RotateRight(SDL.SDL_Keycode code, bool isDown) {
-            Console.WriteLine("Rotating Right");
+        public void RotateRight(SDL.SDL_Scancode code, bool isDown) {
             this.Transformation.RotationRadians += 0.1;
         }
 

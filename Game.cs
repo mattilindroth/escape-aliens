@@ -39,8 +39,8 @@ namespace escape_aliens
 			texture.SourceRectangle = sourceRect;
 			sprite.AddAnimationFrame(texture);
 			_scene.AddRenderable(sprite);
-			_keyboardBindings.AddMapping(SDL.SDL_Keycode.SDLK_a, p1.RotateLeft);
-			_keyboardBindings.AddMapping(SDL.SDL_Keycode.SDLK_d, p1.RotateRight);
+			_keyboardBindings.AddMapping(SDL.SDL_Scancode.SDL_SCANCODE_A, p1.RotateLeft);
+			_keyboardBindings.AddMapping(SDL.SDL_Scancode.SDL_SCANCODE_D, p1.RotateRight);
 		}
     	public void Run(uint desiredFps) 
     	{
@@ -56,18 +56,18 @@ namespace escape_aliens
 						case SDL.SDL_EventType.SDL_QUIT:
 							quit = true;
 							break;
-						case SDL.SDL_EventType.SDL_KEYDOWN:
-							_keyboardBindings.ExperimentalKeyHandling(e);
+						// case SDL.SDL_EventType.SDL_KEYDOWN:
+						// 	_keyboardBindings.ExperimentalKeyHandling(e);
 
-							break;
-						case SDL.SDL_EventType.SDL_KEYUP:
-							_keyboardBindings.ExperimentalKeyHandling(e);
-							break;
+						// 	break;
+						// case SDL.SDL_EventType.SDL_KEYUP:
+						// 	_keyboardBindings.ExperimentalKeyHandling(e);
+						// 	break;
 					}
 				}
-				
+				_keyboardBindings.UpdateStateAndDispatchEvents();
 				_scene.Render();
-
+				
 				ticks = _timer.GetElapsedTicks();
 				if(ticks < ticksPerFrame) {
 					_timer.Sleep((ticksPerFrame - ticks));
