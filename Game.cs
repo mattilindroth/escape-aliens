@@ -11,23 +11,28 @@ namespace escape_aliens
 		private ITimer _timer;
 		private Scene _scene;
 		private KeyboardBindings _keyboardBindings;
+		private Updater _updater;
 
     	public Game(Scene scene, ITimer timer) 
     	{
 			_scene = scene;
 			_timer = timer;
 			_keyboardBindings = new KeyboardBindings();
+			_updater = new Updater();
     	}
 
 		public void LoadResource() {
 			Player p1 = new Player();
-			SpriteComponent sprite = new SpriteComponent(p1.Transformation, 0);
-			p1.Transformation.RotationRadians = Math.PI / 6;
+			SpriteComponent sprite = new SpriteComponent(p1.Transformation, 3);
+			ThrustComponent thrust = new ThrustComponent(30, 2);
+			sprite.AddedToGameObject(p1);
+			thrust.AddedToGameObject(p1);
+			
 			Texture texture = _scene.Renderer.LoadTexture(@"C:\Source\escape-aliens\Resources\SpaceShipRed.png");
 			SDL.SDL_Rect renderRect;
 			SDL.SDL_Rect sourceRect;
-			renderRect.x = 40;
-			renderRect.y = 40;
+			renderRect.x = 240;
+			renderRect.y = 240;
 			renderRect.w = 80;
 			renderRect.h = 80;
 			
@@ -35,12 +40,14 @@ namespace escape_aliens
 			sourceRect.h = 170;
 			sourceRect.x = 0;
 			sourceRect.y = 0;
+
 			texture.RenderRectangle = renderRect;
 			texture.SourceRectangle = sourceRect;
 			sprite.AddAnimationFrame(texture);
 			_scene.AddRenderable(sprite);
 			_keyboardBindings.AddMapping(SDL.SDL_Scancode.SDL_SCANCODE_A, p1.RotateLeft);
 			_keyboardBindings.AddMapping(SDL.SDL_Scancode.SDL_SCANCODE_D, p1.RotateRight);
+			_updater.AddUpdatable(p1);
 		}
     	public void Run(uint desiredFps) 
     	{
@@ -72,6 +79,7 @@ namespace escape_aliens
 				if(ticks < ticksPerFrame) {
 					_timer.Sleep((ticksPerFrame - ticks));
 				}
+				_updater.UpdateObjects(_timer.GetElapsedTicks() * 10000);
 			}
 
     	}

@@ -4,6 +4,6 @@ namespace escape_aliens.Engine.Interfaces
 {
     public interface IUpdatable 
     {
-        void Update(double timeStep);
+        void Update(double timeStepMilliseconds);
     }       
 }

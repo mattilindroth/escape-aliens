@@ -35,11 +35,14 @@ namespace escape_aliens.Engine
              IntPtr keyStatesPtr = SDL.SDL_GetKeyboardState(out numKeys);
              if(keyStatesPtr == IntPtr.Zero)
                  Console.WriteLine(SDL.SDL_GetError());
+             
              byte[] keyStates = new byte[numKeys];
              System.Runtime.InteropServices.Marshal.Copy(keyStatesPtr, keyStates, 0, numKeys);
+
              foreach(var key in _keyMappings.Keys) {
-                 if(keyStates[(int)key] != _previousKeyStates[(int)key]) 
-                     _keyMappings[key].Invoke(key, keyStates[(int)key] == 1);
+                 int keyIndex = (int)key;
+                 if(keyStates[keyIndex] != _previousKeyStates[keyIndex]) 
+                    _keyMappings[key].Invoke(key, keyStates[keyIndex] == 1);
             }
             _previousKeyStates = keyStates;
         }

@@ -9,7 +9,6 @@ namespace escape_aliens.Engine
 
         private Renderer _renderer;
         private List<IRenderable> _renderables;
-        private List<IUpdatable> _updatables;
         private List<GameObject> _gameObjects;
 
         public Scene(Renderer renderer) 
@@ -17,7 +16,6 @@ namespace escape_aliens.Engine
             _renderer = renderer;
             _gameObjects = new List<GameObject>();
             _renderables = new List<IRenderable>();
-            _updatables = new List<IUpdatable>();
         }
 
         public Renderer Renderer {
@@ -31,17 +29,6 @@ namespace escape_aliens.Engine
         public void AddRenderable(IRenderable renderable) {
             _renderables.Add(renderable);
             _renderables.Sort(ZValueComparer);
-        }
-
-        public void AddUpdatable(IUpdatable updatable) {
-            _updatables.Add(updatable);
-        }
-
-        public void Update(double timeStep)
-        {
-            foreach(var updatable in _updatables) {
-                updatable.Update(timeStep);
-            }
         }
 
         public void Render() 
