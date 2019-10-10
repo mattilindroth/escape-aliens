@@ -14,7 +14,7 @@ using System.Collections.Generic;
             _componentInputListeners = new List<ComponentInputListener>();
         }
 
-        public void DispatchRender(SceneRenderer renderer) 
+        public void DispatchRender(Renderer renderer) 
         {
             foreach(var componentRenderer in _componentRenderers)  
             {

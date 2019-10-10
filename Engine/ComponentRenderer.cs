@@ -4,6 +4,6 @@ namespace escape_aliens.Engine
 {
     public abstract class ComponentRenderer
     {
-        public abstract void RenderComponent(SceneRenderer renderer);
+        public abstract void RenderComponent(Renderer renderer);
     }
 }

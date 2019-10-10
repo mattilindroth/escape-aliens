@@ -5,10 +5,14 @@ namespace escape_aliens.Engine
 {
     public class KeyboardState
     {
-        //private SDL.SDL_KeyboardEvent
         public KeyboardState() 
         {
+            
+        }
 
+        IntPtr GetKeyboardState() {
+            int numKeys;
+            return SDL.SDL_GetKeyboardState( out numKeys );
         }
 
     }

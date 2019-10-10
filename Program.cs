@@ -13,8 +13,9 @@ namespace escape_aliens
             }
             var window = new GameWindow("Escape Aliens!");
             Console.WriteLine("Window is {0}x{1}", window.GetWidth, window.GetHeight);
-            var scene = new Scene(new Engine.SceneRenderer(window));
+            var scene = new Scene(new Engine.Renderer(window));
             var game = new Game(scene, new SDL2Timer());
+            game.LoadResource();
 
             game.Run(65);
             // var window = IntPtr.Zero;                        
