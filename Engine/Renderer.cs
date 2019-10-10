@@ -6,7 +6,7 @@ namespace escape_aliens.Engine
     public class Renderer 
     {
         private GameWindow _window;
-        private IntPtr _screenSurface;
+        // private IntPtr _screenSurface;
         private IntPtr _renderer; 
         private const double _rad2deg = (180.0f / System.Math.PI);
         public Renderer(GameWindow window) 
@@ -22,6 +22,10 @@ namespace escape_aliens.Engine
             return new Texture(texture);
         }
 
+        public void DrawPixel(int x, int y) {
+            SDL.SDL_RenderDrawPoint(_renderer,x, y);
+        }
+
         public void DrawLine(int x1, int y1, int x2, int y2) 
         {
             SDL.SDL_RenderDrawLine(_renderer, x1, y1, x2, y2);
@@ -33,6 +37,8 @@ namespace escape_aliens.Engine
             SDL.SDL_Rect sourceRect = texture.SourceRectangle;
             SDL.SDL_Rect renderRect = texture.RenderRectangle;
             double angleDegrees = transformation.RotationRadians * _rad2deg;
+            renderRect.x = (int)transformation.Position.X;
+            renderRect.y = (int)transformation.Position.Y;
             center.x = (renderRect.w) / 2;
             center.y = (renderRect.h) / 2;
             SDL.SDL_RendererFlip renderFlip = flip ? SDL.SDL_RendererFlip.SDL_FLIP_HORIZONTAL : SDL.SDL_RendererFlip.SDL_FLIP_NONE;
@@ -52,7 +58,7 @@ namespace escape_aliens.Engine
         public void SetColor(byte r, byte g, byte b, byte a) 
         {
             SDL.SDL_SetRenderDrawColor(_renderer, r, g, b, a);
-        }
+        }       
 
         public void BeginRender()
         {

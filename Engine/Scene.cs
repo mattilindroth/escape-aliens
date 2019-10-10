@@ -33,7 +33,7 @@ namespace escape_aliens.Engine
 
         public void Render() 
         {
-            _renderer.SetColor(0,255,255, 255);
+            _renderer.SetColor(255,255,255, 255);
             _renderer.BeginRender();
             
             foreach(var renderable in _renderables) {

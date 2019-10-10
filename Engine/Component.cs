@@ -13,7 +13,7 @@ namespace escape_aliens.Engine
             _gameObjects = new List<GameObject>();
         }
 
-        public List<GameObject> AttachedGameObjects {get;}
+        public List<GameObject> AttachedGameObjects {get {return _gameObjects;}}
 
         public void AddedToGameObject(GameObject gameObject) 
         {

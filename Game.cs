@@ -1,5 +1,6 @@
 using System;
 using SDL2;
+using escape_aliens.Engine.Input;
 using escape_aliens.Engine.Interfaces;
 using escape_aliens.Engine;
 
@@ -24,15 +25,15 @@ namespace escape_aliens
 		public void LoadResource() {
 			Player p1 = new Player();
 			SpriteComponent sprite = new SpriteComponent(p1.Transformation, 3);
-			ThrustComponent thrust = new ThrustComponent(30, 2);
+			ThrustComponent thrust = new ThrustComponent(2);
 			sprite.AddedToGameObject(p1);
 			thrust.AddedToGameObject(p1);
-			
+			thrust.GenerateParticles(20);
 			Texture texture = _scene.Renderer.LoadTexture(@"C:\Source\escape-aliens\Resources\SpaceShipRed.png");
 			SDL.SDL_Rect renderRect;
 			SDL.SDL_Rect sourceRect;
-			renderRect.x = 240;
-			renderRect.y = 240;
+			renderRect.x = 0;
+			renderRect.y = 0;
 			renderRect.w = 80;
 			renderRect.h = 80;
 			
@@ -45,9 +46,12 @@ namespace escape_aliens
 			texture.SourceRectangle = sourceRect;
 			sprite.AddAnimationFrame(texture);
 			_scene.AddRenderable(sprite);
+			_scene.AddRenderable(thrust);
 			_keyboardBindings.AddMapping(SDL.SDL_Scancode.SDL_SCANCODE_A, p1.RotateLeft);
 			_keyboardBindings.AddMapping(SDL.SDL_Scancode.SDL_SCANCODE_D, p1.RotateRight);
+			_keyboardBindings.AddMapping(SDL.SDL_Scancode.SDL_SCANCODE_W, p1.Forward);
 			_updater.AddUpdatable(p1);
+			_updater.AddUpdatable(thrust);
 		}
     	public void Run(uint desiredFps) 
     	{
