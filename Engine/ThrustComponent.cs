@@ -1,4 +1,5 @@
 using System;
+using SDL2;
 using System.Collections.Generic;
 using escape_aliens.Engine.Interfaces;
 
@@ -8,8 +9,8 @@ namespace escape_aliens.Engine
     {
         private class Particle 
         {
-            public Math.Vector2D _position;
-            public Math.Vector2D _speed;
+            public MathExtra.Vector2D _position;
+            public MathExtra.Vector2D _speed;
             public byte r, g, b, a;
             public double _lifeTimeMilliseconds;
             public long _timeOfBirthTicks;
@@ -19,12 +20,14 @@ namespace escape_aliens.Engine
         private bool _isVisible;
         int _numParticles;
         private int _ZValue ;
+        private bool _thrustOn;
 
         public ThrustComponent(int ZValue = 0) {
 
             _particles = new List<Particle>();
             _isVisible  = true;
             _ZValue = ZValue;
+            _thrustOn = false;
         }
 
         public void GenerateParticles(int numParticles) {
@@ -35,66 +38,79 @@ namespace escape_aliens.Engine
             _numParticles = numParticles;
            
             for(int i = 0; i < numParticles; i++) {
-                _particles.Add(GenerateOneParticle());
+                _particles.Add(GenerateOneParticle(MathExtra.Singletons.Random()));
             }
         }
 
-        private Particle GenerateOneParticle() 
+        public void ToggleThrust(bool isOn) {
+            _thrustOn = isOn;
+        }
+
+        private Particle GenerateOneParticle(Random rand) 
         {
-            double maxSpd = 1.0; //pixels / frame
-            double minSdp = 0.5; //pixels / frame
-            double maxLifeTimeMillis = 10000.0; //2 secs
-            double minLifeTimeMillis = 5000.0; //0.5 secs
+            double maxSpd = 5.0; //pixels / frame
+            double minSdp = 2.0; //pixels / frame
+            double maxLifeTimeMillis = 700.0; 
+            double minLifeTimeMillis = 500.0;
             double angleRads = System.Math.PI / 6; // 30 degs.
-            Random rand = new Random(DateTime.Now.Millisecond);
 
             Particle p = new Particle() {
-                _position = new Math.Vector2D(),
-                _speed = new Math.Vector2D(),
+                _position = new MathExtra.Vector2D(),
+                _speed = new MathExtra.Vector2D(),
                 r = 255,
                 g = 255,
                 b = 100,
                 a = 255,
             };
-            p._position.X = this.AttachedGameObjects[0].Transformation.Position.X;
-            p._position.Y =  this.AttachedGameObjects[0].Transformation.Position.Y;
+            p._position.X = this.AttachedGameObjects[0].Transformation.Position.X + 45;
+            p._position.Y =  this.AttachedGameObjects[0].Transformation.Position.Y + 45;
             double spd = minSdp + ((maxSpd - minSdp) * rand.NextDouble()); 
             double angle = -angleRads + (2 * angleRads * rand.NextDouble()); 
-            angle = angle + this.AttachedGameObjects[0].Transformation.RotationRadians + System.Math.PI;
+            angle = angle + this.AttachedGameObjects[0].Transformation.RotationRadians + (System.Math.PI / 2);
             p._speed.X = System.Math.Cos(angle);
             p._speed.Y = System.Math.Sin(angle);
             p._speed = p._speed * spd;
             p._lifeTimeMilliseconds = minLifeTimeMillis + ((maxLifeTimeMillis - minLifeTimeMillis) * rand.NextDouble());
+            p._position += p._speed;
             p._timeOfBirthTicks = DateTime.Now.Ticks;
             return p;
         }
 
         void IUpdatable.Update(double timeStepMilliseconds)
         {
+            if(_thrustOn) {
+                while(_particles.Count < _numParticles) {
+                    var p = GenerateOneParticle(MathExtra.Singletons.Random());
+                    _particles.Add(p);
+                }
+            }
+
             for(int i = 0; i < _particles.Count; i++) {
                 var p = _particles[i];
-                // long age = (long)((p._timeOfBirthTicks / 10000) + timeStepMilliseconds); //10000 ticks in a ms
-                // if(p._lifeTimeMilliseconds > age) {
-                //     _particles.Remove(p);
-                //     p = GenerateOneParticle();
-                //     _particles.Add(p);
-                // }
+                double age = ((DateTime.Now.Ticks - p._timeOfBirthTicks) / 10000); //10000 ticks in a ms
+                if(p._lifeTimeMilliseconds < age ) {
+                    _particles.Remove(p);
+                }
                 p._position += (/*timeStepMilliseconds **/ p._speed);
 
-                if(p.b > 10) 
-                    p.b = (byte)(p.b - 10);
-                if(p.b > 0)
-                    p.b = 0;
-                if(p.g > 110)
-                    p.g = (byte)(p.g - 10);
-                if (p.g > 100)
-                    p.g  = 100;
+                 if(p.b > 10) 
+                     p.b = (byte)(p.b - 1);
+                 if(p.b > 0)
+                     p.b = 0;
+                 if(p.g > 110)
+                     p.g = (byte)(p.g - 1);
+                 if (p.g > 100)
+                     p.g  = 100;
             }
         }
 
         bool IRenderable.DoRender
         {
-            get {return _isVisible;}
+            get 
+            {
+                _isVisible = _particles.Count > 0;
+                return _isVisible;
+            }
         }
 
         void IRenderable.Render(Renderer renderer) 

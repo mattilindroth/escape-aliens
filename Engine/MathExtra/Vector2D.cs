@@ -1,6 +1,6 @@
 using System;
 using SDL2;
-namespace escape_aliens.Engine.Math {
+namespace escape_aliens.Engine.MathExtra {
     public class Vector2D {
         public double X {get;set;}
         public double Y {get;set;} 

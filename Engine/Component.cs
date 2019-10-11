@@ -6,7 +6,7 @@ namespace escape_aliens.Engine
 {
     public abstract class Component 
     {
-        private List<GameObject> _gameObjects;
+        protected List<GameObject> _gameObjects;
 
         public Component() 
         {

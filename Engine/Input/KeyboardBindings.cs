@@ -41,8 +41,8 @@ namespace escape_aliens.Engine.Input
 
              foreach(var key in _keyMappings.Keys) {
                  int keyIndex = (int)key;
-                 if(keyStates[keyIndex] != _previousKeyStates[keyIndex]) 
-                    _keyMappings[key].Invoke(key, keyStates[keyIndex] == 1);
+                 //if(keyStates[keyIndex] != _previousKeyStates[keyIndex]) 
+                _keyMappings[key].Invoke(key, keyStates[keyIndex] == 1);
             }
             _previousKeyStates = keyStates;
         }

@@ -1,4 +1,4 @@
-using escape_aliens.Engine.Math;
+using escape_aliens.Engine.MathExtra;
 
 namespace escape_aliens.Engine 
 {

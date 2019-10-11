@@ -2,9 +2,8 @@ using System;
 using SDL2;
 using escape_aliens.Engine.Input;
 using escape_aliens.Engine.Interfaces;
-using escape_aliens.Engine;
 
-namespace escape_aliens
+namespace escape_aliens.Engine
 {
     public class Game 
     {
@@ -24,11 +23,13 @@ namespace escape_aliens
 
 		public void LoadResource() {
 			Player p1 = new Player();
+			p1.Transformation.Position.X = 300;
+			p1.Transformation.Position.Y = 300;
 			SpriteComponent sprite = new SpriteComponent(p1.Transformation, 3);
 			ThrustComponent thrust = new ThrustComponent(2);
-			sprite.AddedToGameObject(p1);
-			thrust.AddedToGameObject(p1);
-			thrust.GenerateParticles(20);
+			p1.AddComponent(thrust);
+			p1.AddComponent(sprite);
+			thrust.GenerateParticles(200);
 			Texture texture = _scene.Renderer.LoadTexture(@"C:\Source\escape-aliens\Resources\SpaceShipRed.png");
 			SDL.SDL_Rect renderRect;
 			SDL.SDL_Rect sourceRect;
@@ -47,8 +48,8 @@ namespace escape_aliens
 			sprite.AddAnimationFrame(texture);
 			_scene.AddRenderable(sprite);
 			_scene.AddRenderable(thrust);
-			_keyboardBindings.AddMapping(SDL.SDL_Scancode.SDL_SCANCODE_A, p1.RotateLeft);
 			_keyboardBindings.AddMapping(SDL.SDL_Scancode.SDL_SCANCODE_D, p1.RotateRight);
+			_keyboardBindings.AddMapping(SDL.SDL_Scancode.SDL_SCANCODE_A, p1.RotateLeft);
 			_keyboardBindings.AddMapping(SDL.SDL_Scancode.SDL_SCANCODE_W, p1.Forward);
 			_updater.AddUpdatable(p1);
 			_updater.AddUpdatable(thrust);
@@ -67,7 +68,12 @@ namespace escape_aliens
 						case SDL.SDL_EventType.SDL_QUIT:
 							quit = true;
 							break;
-						// case SDL.SDL_EventType.SDL_KEYDOWN:
+						case SDL.SDL_EventType.SDL_KEYDOWN:
+							_keyboardBindings.UpdateStateAndDispatchEvents();
+							break;
+						case SDL.SDL_EventType.SDL_KEYUP:
+							_keyboardBindings.UpdateStateAndDispatchEvents();
+							break;
 						// 	_keyboardBindings.ExperimentalKeyHandling(e);
 
 						// 	break;
@@ -76,7 +82,7 @@ namespace escape_aliens
 						// 	break;
 					}
 				}
-				_keyboardBindings.UpdateStateAndDispatchEvents();
+				
 				_scene.Render();
 				
 				ticks = _timer.GetElapsedTicks();

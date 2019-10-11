@@ -20,12 +20,21 @@ namespace escape_aliens.Engine
             set {_transformation = value;}
         }
 
+        public Object GetComponent(Type componentType) {
+            foreach(Object c in _components) {
+                if(c.GetType() == componentType) {
+                    return c;
+                }
+            }
+            return null;
+        }
+
         public void AddedToScene(Scene scene) 
         {
             _scene = scene;
         }
         
-        void AddComponent(Component component) {
+        public void AddComponent(Component component) {
             _components.Add(component);
             component.AddedToGameObject(this);
         }
