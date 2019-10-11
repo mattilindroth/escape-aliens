@@ -18,44 +18,7 @@ namespace escape_aliens
             game.LoadResource();
 
             game.Run(65);
-            // var window = IntPtr.Zero;                        
-            // window = SDL.SDL_CreateWindow(".NET Core SDL2-CS Tutorial",
-            //     SDL.SDL_WINDOWPOS_CENTERED,
-            //     SDL.SDL_WINDOWPOS_CENTERED,
-            //     1440,
-            //     900,
-            //     SDL.SDL_WindowFlags.SDL_WINDOW_FULLSCREEN
-            // );
-
-            // if (window == IntPtr.Zero)
-            // {
-            //     Console.WriteLine("Unable to create a window. SDL. Error: {0}", SDL.SDL_GetError());  
-            // }
-
-            // // SDL.SDL_Delay(5000);
-            // SDL.SDL_Event e;
-            // bool quit = false;                        
-            // while (!quit)
-            // {
-            //     while (SDL.SDL_PollEvent(out e) != 0)
-            //     {
-            //         switch (e.type)
-            //         {
-            //            case SDL.SDL_EventType.SDL_QUIT:
-            //                quit = true;
-            //                break;
-            //             case SDL.SDL_EventType.SDL_KEYDOWN:
-            //                 switch (e.key.keysym.sym)
-            //                 {
-            //                     case SDL.SDL_Keycode.SDLK_q:
-            //                         quit = true;
-            //                         break;
-            //                 }
-            //                 break;
-            //         }
-            //     }
-            // }
-            // SDL.SDL_DestroyWindow(window);    
+            
             SDL.SDL_Quit();
         }
     }

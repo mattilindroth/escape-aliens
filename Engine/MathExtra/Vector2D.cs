@@ -2,6 +2,28 @@ using System;
 using SDL2;
 namespace escape_aliens.Engine.MathExtra {
     public class Vector2D {
+
+		public Vector2D() {
+			X = 0;
+			Y = 0;
+		}
+
+		public Vector2D(double x, double y) {
+			X = x;
+			Y = y;
+		}
+
+		// public Vector2D(double length, float angleRadians) {
+		// 	X = length * Math.Cos(angleRadians);
+		// 	Y = length * Math.Sin(angleRadians);
+		// }
+		public double Length 
+		{
+			get 
+			{
+				return Math.Sqrt((X*X)+(Y*Y));
+			}
+		}
         public double X {get;set;}
         public double Y {get;set;} 
 

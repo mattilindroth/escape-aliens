@@ -51,8 +51,8 @@ namespace escape_aliens.Engine
             double maxSpd = 5.0; //pixels / frame
             double minSdp = 2.0; //pixels / frame
             double maxLifeTimeMillis = 700.0; 
-            double minLifeTimeMillis = 500.0;
-            double angleRads = System.Math.PI / 6; // 30 degs.
+            double minLifeTimeMillis = 100.0;
+            double angleRads = System.Math.PI / 8; // 22,5 degs.
 
             Particle p = new Particle() {
                 _position = new MathExtra.Vector2D(),
@@ -94,11 +94,11 @@ namespace escape_aliens.Engine
                 p._position += (/*timeStepMilliseconds **/ p._speed);
 
                  if(p.b > 10) 
-                     p.b = (byte)(p.b - 1);
+                     p.b = (byte)(p.b - 10);
                  if(p.b > 0)
                      p.b = 0;
                  if(p.g > 110)
-                     p.g = (byte)(p.g - 1);
+                     p.g = (byte)(p.g - 10);
                  if (p.g > 100)
                      p.g  = 100;
             }

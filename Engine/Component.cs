@@ -15,7 +15,7 @@ namespace escape_aliens.Engine
 
         public List<GameObject> AttachedGameObjects {get {return _gameObjects;}}
 
-        public void AddedToGameObject(GameObject gameObject) 
+        internal void AddedToGameObject(GameObject gameObject) 
         {
             _gameObjects.Add(gameObject);
         }

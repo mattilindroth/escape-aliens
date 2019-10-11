@@ -4,17 +4,39 @@ using escape_aliens.Engine.MathExtra;
 using escape_aliens.Engine.Interfaces;
 namespace escape_aliens
 {
-    public class Player : Engine.GameObject, IUpdatable 
+    public class Player : Engine.GameObject, IUpdatable , IPhysicalObject
     {
         private bool _rotateLeft, _rotateRight;
 
         private const double _rotationSpd = 0.06;
-        private double _spd;
+        private const double _spd = 13;
+        private Vector2D _speed;
+        private Vector2D _acceleration;
 
         public Player(){
-            _spd = 0;
+            _speed = new Vector2D(0,0);
+            _acceleration = new Vector2D(0,0);
             _rotateLeft = false;
             _rotateRight = false;
+        }
+
+        bool IPhysicalObject.DoUpdate
+        {
+            get 
+            {
+                return true;
+            }
+        }
+
+        Vector2D IPhysicalObject.Acceleration 
+        {
+            get {return this._acceleration;}
+        }
+
+        Vector2D IPhysicalObject.Speed 
+        {
+            get {return this._speed;}
+            set {this._speed = value;}
         }
 
         void IUpdatable.Update(double timeStepMilliseconds) {
@@ -22,24 +44,22 @@ namespace escape_aliens
                 this.Transformation.RotationRadians -= _rotationSpd;
             if(_rotateRight)
                 this.Transformation.RotationRadians += _rotationSpd;
-            if(_spd != 0) {
-                Vector2D spd = new Vector2D();
-                spd.X = System.Math.Sin(this.Transformation.RotationRadians);
-                spd.Y = -System.Math.Cos(this.Transformation.RotationRadians);
-                spd = spd * _spd;
-                this.Transformation.Position += spd;
+            if(_speed.Length != 0) {
+                this.Transformation.Position += (_speed * timeStepMilliseconds);
             }
         }
 
         public void Forward(SDL.SDL_Scancode code, bool isDown) {
             if(isDown) {
-                _spd = 1;
+                _acceleration.X = Math.Sin(this.Transformation.RotationRadians);
+                _acceleration.Y = -Math.Cos(this.Transformation.RotationRadians);
+                _acceleration = _acceleration * _spd;
             } else {
-                _spd = 0;
+                _acceleration.X = 0;
+                _acceleration.Y = 0;
             }
             var thrustComponent = (escape_aliens.Engine.ThrustComponent)this.GetComponent(typeof(escape_aliens.Engine.ThrustComponent));
             thrustComponent.ToggleThrust(isDown);
-            
         }
 
         public void  RotateLeft(SDL.SDL_Scancode code, bool isDown) {

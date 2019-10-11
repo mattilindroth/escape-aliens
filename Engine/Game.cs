@@ -12,6 +12,7 @@ namespace escape_aliens.Engine
 		private Scene _scene;
 		private KeyboardBindings _keyboardBindings;
 		private Updater _updater;
+		private Physics _physics;
 
     	public Game(Scene scene, ITimer timer) 
     	{
@@ -19,6 +20,7 @@ namespace escape_aliens.Engine
 			_timer = timer;
 			_keyboardBindings = new KeyboardBindings();
 			_updater = new Updater();
+			_physics = new Physics();
     	}
 
 		public void LoadResource() {
@@ -29,7 +31,7 @@ namespace escape_aliens.Engine
 			ThrustComponent thrust = new ThrustComponent(2);
 			p1.AddComponent(thrust);
 			p1.AddComponent(sprite);
-			thrust.GenerateParticles(200);
+			thrust.GenerateParticles(600);
 			Texture texture = _scene.Renderer.LoadTexture(@"C:\Source\escape-aliens\Resources\SpaceShipRed.png");
 			SDL.SDL_Rect renderRect;
 			SDL.SDL_Rect sourceRect;
@@ -53,6 +55,7 @@ namespace escape_aliens.Engine
 			_keyboardBindings.AddMapping(SDL.SDL_Scancode.SDL_SCANCODE_W, p1.Forward);
 			_updater.AddUpdatable(p1);
 			_updater.AddUpdatable(thrust);
+			_physics.AddPhysicalObject(p1);
 		}
     	public void Run(uint desiredFps) 
     	{
@@ -74,12 +77,6 @@ namespace escape_aliens.Engine
 						case SDL.SDL_EventType.SDL_KEYUP:
 							_keyboardBindings.UpdateStateAndDispatchEvents();
 							break;
-						// 	_keyboardBindings.ExperimentalKeyHandling(e);
-
-						// 	break;
-						// case SDL.SDL_EventType.SDL_KEYUP:
-						// 	_keyboardBindings.ExperimentalKeyHandling(e);
-						// 	break;
 					}
 				}
 				
@@ -89,7 +86,10 @@ namespace escape_aliens.Engine
 				if(ticks < ticksPerFrame) {
 					_timer.Sleep((ticksPerFrame - ticks));
 				}
-				_updater.UpdateObjects(_timer.GetElapsedTicks() * 10000);
+				double elapsedMillisecods = _timer.GetElapsedTicks() / 10000.0;
+				_physics.Update(elapsedMillisecods);
+				 elapsedMillisecods = _timer.GetElapsedTicks() / 10000.0;
+				_updater.UpdateObjects(elapsedMillisecods);
 			}
 
     	}
