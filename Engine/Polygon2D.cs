@@ -19,11 +19,27 @@ namespace escape_aliens.Engine
             _points.Add(new Point2D(X, Y));
         }
 
+        public void AddPointToIndex(Point2D point, int index) {
+            _points.Insert(index, point);
+        }
+
         public int Count { get {return _points.Count;}}
 
         public Point2D Point(int index) 
         {
             return _points[index];
         }
+
+        public void RemovePoint(Point2D p) {
+            _points.Remove(p);
+        }
+
+        public void RemovePointAt(int index) 
+        {
+            _points.RemoveAt(index);
+        }
+
+        
+
     }
 }

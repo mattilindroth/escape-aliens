@@ -9,7 +9,7 @@ namespace escape_aliens
         private bool _rotateLeft, _rotateRight;
 
         private const double _rotationSpd = 0.06;
-        private const double _spd = 13;
+        private const double _spd = 26;
         private Vector2D _speed;
         private Vector2D _acceleration;
 

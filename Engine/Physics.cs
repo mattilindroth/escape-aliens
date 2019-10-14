@@ -10,7 +10,7 @@ namespace escape_aliens.Engine
         private List<IPhysicalObject> _physicalObjects;
         
         public Physics() {
-            _gravity = new Vector2D(0, 12);
+            _gravity = new Vector2D(0, 24);
             _physicalObjects = new List<IPhysicalObject>();
         }
 
