@@ -17,7 +17,11 @@ namespace escape_aliens.Engine
             _updatables.Add(updatable);
         }
 
-        public void RemvoeUpdatable(IUpdatable updatable) {
+        public bool Contains(IUpdatable updatable) {
+            return _updatables.Contains(updatable);
+        }
+
+        public void RemoveUpdatable(IUpdatable updatable) {
             _updatables.Remove(updatable);
         }
 

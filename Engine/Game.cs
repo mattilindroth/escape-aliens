@@ -10,7 +10,7 @@ namespace escape_aliens.Engine
 		
 		private ITimer _timer;
 		private Scene _scene;
-		private KeyboardBindings _keyboardBindings;
+		private Input.Input _input;
 		private Updater _updater;
 		private Physics _physics;
 
@@ -18,45 +18,43 @@ namespace escape_aliens.Engine
     	{
 			_scene = scene;
 			_timer = timer;
-			_keyboardBindings = new KeyboardBindings();
+			_input = new Input.Input();
 			_updater = new Updater();
 			_physics = new Physics();
     	}
 
-		public void LoadResource() {
-			Player p1 = new Player();
-			p1.Transformation.Position.X = 300;
-			p1.Transformation.Position.Y = 300;
-			SpriteComponent sprite = new SpriteComponent(p1.Transformation, 3);
-			ThrustComponent thrust = new ThrustComponent(2);
-			p1.AddComponent(thrust);
-			p1.AddComponent(sprite);
-			thrust.GenerateParticles(600);
-			Texture texture = _scene.Renderer.LoadTexture(@"C:\Source\escape-aliens\Resources\SpaceShipRed.png");
-			SDL.SDL_Rect renderRect;
-			SDL.SDL_Rect sourceRect;
-			renderRect.x = 0;
-			renderRect.y = 0;
-			renderRect.w = 80;
-			renderRect.h = 80;
-			
-			sourceRect.w = 167;
-			sourceRect.h = 170;
-			sourceRect.x = 0;
-			sourceRect.y = 0;
-
-			texture.RenderRectangle = renderRect;
-			texture.SourceRectangle = sourceRect;
-			sprite.AddAnimationFrame(texture);
-			_scene.AddRenderable(sprite);
-			_scene.AddRenderable(thrust);
-			_keyboardBindings.AddMapping(SDL.SDL_Scancode.SDL_SCANCODE_D, p1.RotateRight);
-			_keyboardBindings.AddMapping(SDL.SDL_Scancode.SDL_SCANCODE_A, p1.RotateLeft);
-			_keyboardBindings.AddMapping(SDL.SDL_Scancode.SDL_SCANCODE_W, p1.Forward);
-			_updater.AddUpdatable(p1);
-			_updater.AddUpdatable(thrust);
-			_physics.AddPhysicalObject(p1);
+		public Texture LoadTexture(string fileName) {
+			return _scene.Renderer.LoadTexture(@"C:\Source\escape-aliens\Resources\SpaceShipRed.png");
 		}
+
+		public void AddObject(GameObject gameObject) 
+		{
+			for(int i = 0; i < gameObject.CountOfComponents; i++) {
+				var component  = gameObject.GetComponent(i);
+				if(component is IRenderable && (!_scene.Contains((IRenderable)component))) {
+					_scene.AddRenderable((IRenderable)component);
+				}
+				if(component is IUpdatable && (!_updater.Contains((IUpdatable)component))) {
+					_updater.AddUpdatable((IUpdatable)component);
+				}
+				if(component is IPhysicalObject && (!_physics.Contains((IPhysicalObject)component))) {
+					_physics.AddPhysicalObject((IPhysicalObject)component);
+				}
+			}
+
+			if(gameObject is IRenderable && (!_scene.Contains((IRenderable)gameObject))) {
+				_scene.AddRenderable((IRenderable)gameObject);
+			}
+			if(gameObject is IUpdatable && (!_updater.Contains((IUpdatable)gameObject))) {
+				_updater.AddUpdatable((IUpdatable)gameObject);
+			}
+			if(gameObject is IPhysicalObject && (!_physics.Contains((IPhysicalObject)gameObject))) {
+				_physics.AddPhysicalObject((IPhysicalObject)gameObject);
+			}
+		}
+
+		public Input.Input Input {get {return _input;}}
+
     	public void Run(uint desiredFps) 
     	{
 			bool quit = false;	
@@ -72,10 +70,10 @@ namespace escape_aliens.Engine
 							quit = true;
 							break;
 						case SDL.SDL_EventType.SDL_KEYDOWN:
-							_keyboardBindings.UpdateStateAndDispatchEvents();
+							_input.KeyboardBindings.UpdateStateAndDispatchEvents();
 							break;
 						case SDL.SDL_EventType.SDL_KEYUP:
-							_keyboardBindings.UpdateStateAndDispatchEvents();
+							_input.KeyboardBindings.UpdateStateAndDispatchEvents();
 							break;
 					}
 				}

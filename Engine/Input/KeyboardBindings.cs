@@ -30,7 +30,7 @@ namespace escape_aliens.Engine.Input
                 _keyMappings.Remove(code);
         }
 
-         public void UpdateStateAndDispatchEvents() {
+        internal void UpdateStateAndDispatchEvents() {
              int numKeys = 0;
              IntPtr keyStatesPtr = SDL.SDL_GetKeyboardState(out numKeys);
              if(keyStatesPtr == IntPtr.Zero)

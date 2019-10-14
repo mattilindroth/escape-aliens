@@ -19,6 +19,10 @@ namespace escape_aliens.Engine
             _physicalObjects.Add(physicalObject);
         }
 
+        public bool Contains(IPhysicalObject physicalObject) {
+            return _physicalObjects.Contains(physicalObject);
+        }
+
         public void RemovePhysicalObject(IPhysicalObject physicalObject)
         {
             _physicalObjects.Remove(physicalObject);

@@ -39,7 +39,18 @@ namespace escape_aliens.Engine
             _points.RemoveAt(index);
         }
 
-        
+        public bool IsInside(Point2D p) {
+            bool inside = false;
+            for ( int i = 0, j = _points.Count - 1 ; i < _points.Count ; j = i++ )
+            {
+                if ( ( _points[ i ].Y > p.Y ) != ( _points[ j ].Y > p.Y ) &&
+                    p.X < ( _points[ j ].X - _points[ i ].X ) * ( p.Y - _points[ i ].Y ) / ( _points[ j ].Y - _points[ i ].Y ) + _points[ i ].X )
+                {
+                    inside = !inside;
+                }
+            }
+            return inside;
+        }       
 
     }
 }

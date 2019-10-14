@@ -29,6 +29,12 @@ namespace escape_aliens.Engine
             return null;
         }
 
+        public int CountOfComponents {get  {return _components.Count;}}
+
+        public Component GetComponent(int index) {
+            return _components[index];
+        }
+
         public void AddedToScene(Scene scene) 
         {
             _scene = scene;

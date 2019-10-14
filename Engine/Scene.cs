@@ -9,12 +9,10 @@ namespace escape_aliens.Engine
 
         private Renderer _renderer;
         private List<IRenderable> _renderables;
-        private List<GameObject> _gameObjects;
 
         public Scene(Renderer renderer) 
         {
             _renderer = renderer;
-            _gameObjects = new List<GameObject>();
             _renderables = new List<IRenderable>();
         }
 
@@ -22,8 +20,9 @@ namespace escape_aliens.Engine
             get {return _renderer;}
         }
 
-        public void AddGameObject(GameObject gameObject) {
-            _gameObjects.Add(gameObject);
+
+        public bool Contains(IRenderable renderable) {
+            return _renderables.Contains(renderable);
         }
 
         public void AddRenderable(IRenderable renderable) {
