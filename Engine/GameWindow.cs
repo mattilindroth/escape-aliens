@@ -5,8 +5,11 @@ namespace escape_aliens.Engine
 {
     public class GameWindow 
     {
-        public int GetWidth {get;}
-        public int GetHeight {get;}
+        private int _width;
+        private int _height;
+
+        public int GetWidth {get {return _width;}}
+        public int GetHeight {get{return _height;}}
         public bool IsFullScreen {get;}
 
         private IntPtr _windowPtr = IntPtr.Zero;
@@ -18,8 +21,8 @@ namespace escape_aliens.Engine
             if(SDL.SDL_GetCurrentDisplayMode(0, out currentDisplayMode) < 0) {
                 Console.WriteLine("Unable to get current display mode. {0}", SDL.SDL_GetError());
             }
-            GetHeight = currentDisplayMode.h;
-            GetWidth = currentDisplayMode.w;
+            _height = currentDisplayMode.h;
+            _width = currentDisplayMode.w;
             IsFullScreen = true;
 
             _windowPtr = SDL.SDL_CreateWindow(windowCaption, 3, 27, GetWidth/2, GetHeight/2, SDL.SDL_WindowFlags.SDL_WINDOW_RESIZABLE); //SDL.SDL_WindowFlags.SDL_WINDOW_FULLSCREEN);

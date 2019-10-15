@@ -58,14 +58,18 @@ namespace escape_aliens.Engine
         public void SetColor(byte r, byte g, byte b, byte a) 
         {
             SDL.SDL_SetRenderDrawColor(_renderer, r, g, b, a);
-        }       
+        } 
 
-        public void BeginRender()
+        public void SetColor(Color c) {
+            SDL.SDL_SetRenderDrawColor(_renderer, c.R, c.G, c.B, c.A);
+        }
+
+        internal void BeginRender()
         {
             SDL.SDL_RenderClear(_renderer);
         }
 
-        public void EndRender()
+        internal void EndRender()
         {
             SDL.SDL_RenderPresent(_renderer);
         }
