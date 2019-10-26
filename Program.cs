@@ -21,6 +21,8 @@ namespace escape_aliens
             Console.WriteLine("Window is {0}x{1}", window.GetWidth, window.GetHeight);
             var scene = new Scene(new Engine.Renderer(window));
             var game = new Game(scene, new SDL2Timer());
+			game.Physics.Gravity.X = 0;
+			game.Physics.Gravity.Y = 0;
             LoadResource(game);
 
             game.Run(65);
@@ -54,14 +56,10 @@ namespace escape_aliens
 			texture.RenderRectangle = renderRect;
 			texture.SourceRectangle = sourceRect;
 			sprite.AddAnimationFrame(texture);
-			// _scene.AddRenderable(sprite);
-			// _scene.AddRenderable(thrust);
+			
 			game.Input.KeyboardBindings.AddMapping(SDL.SDL_Scancode.SDL_SCANCODE_D, p1.RotateRight);
 			game.Input.KeyboardBindings.AddMapping(SDL.SDL_Scancode.SDL_SCANCODE_A, p1.RotateLeft);
 			game.Input.KeyboardBindings.AddMapping(SDL.SDL_Scancode.SDL_SCANCODE_W, p1.Forward);
-			// _updater.AddUpdatable(p1);
-			// _updater.AddUpdatable(thrust);
-			// _physics.AddPhysicalObject(p1);
             game.AddObject(p1);
         }
     }

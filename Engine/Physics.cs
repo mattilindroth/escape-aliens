@@ -14,6 +14,7 @@ namespace escape_aliens.Engine
             _physicalObjects = new List<IPhysicalObject>();
         }
 
+        public Vector2D Gravity {get {return _gravity;}}
         public void AddPhysicalObject(IPhysicalObject physicalObject)
         {
             _physicalObjects.Add(physicalObject);

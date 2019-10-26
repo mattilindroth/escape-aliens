@@ -24,8 +24,10 @@ namespace escape_aliens.Engine
     	}
 
 		public Texture LoadTexture(string fileName) {
-			return _scene.Renderer.LoadTexture(@"C:\Source\escape-aliens\Resources\SpaceShipRed.png");
+			return _scene.Renderer.LoadTexture(fileName);
 		}
+
+		public Physics Physics {get {return _physics;}}
 
 		public void AddObject(GameObject gameObject) 
 		{
@@ -64,7 +66,7 @@ namespace escape_aliens.Engine
 			while(!quit) {
 				_timer.Start();
 				SDL.SDL_Event e;
-				while(SDL.SDL_PollEvent (out e)!= 0){
+				while(SDL.SDL_PollEvent (out e)!= 0) {
 					switch(e.type) {
 						case SDL.SDL_EventType.SDL_QUIT:
 							quit = true;
@@ -75,9 +77,14 @@ namespace escape_aliens.Engine
 						case SDL.SDL_EventType.SDL_KEYUP:
 							_input.KeyboardBindings.UpdateStateAndDispatchEvents();
 							break;
+						case SDL.SDL_EventType.SDL_MOUSEBUTTONDOWN:
+							this.HandleMouseButtonEvent(e);
+							break;
+						case SDL.SDL_EventType.SDL_MOUSEBUTTONUP:
+							this.HandleMouseButtonEvent(e);
+							break;
 					}
 				}
-				
 				_scene.Render();
 				
 				ticks = _timer.GetElapsedTicks();
@@ -89,9 +96,23 @@ namespace escape_aliens.Engine
 				 elapsedMillisecods = _timer.GetElapsedTicks() / 10000.0;
 				_updater.UpdateObjects(elapsedMillisecods);
 			}
-
     	}
 
+		private void HandleMouseButtonEvent(SDL.SDL_Event e) {
+			bool isDown = false;
+			eMouseButton button = eMouseButton.Any;
+			if(e.type == SDL.SDL_EventType.SDL_MOUSEBUTTONDOWN)
+				isDown = true;
+
+			if(e.button.button == SDL.SDL_BUTTON_LEFT)
+				button = eMouseButton.Left;
+			else if(e.button.button == SDL.SDL_BUTTON_MIDDLE)
+				button = eMouseButton.Middle;
+			else if(e.button.button == SDL.SDL_BUTTON_RIGHT)
+				button = eMouseButton.Right;
+
+			_input.MouseBindings.UpdateAndDispatchMouseButton(button, isDown);
+		}
 		private uint FPSToTicksPerFrame(uint fps) {
 
 			double desiredFpms = ((int)fps) / 1000d;
