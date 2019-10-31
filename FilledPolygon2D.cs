@@ -16,12 +16,40 @@ namespace escape_aliens
             _color = Color.Blue;
         }
 
+        public FilledPolygon2D(Polygon2D polygon) {
+            _zValue = 2;
+            _polygon = polygon;
+            _texture = null;
+            _color = Color.Blue;
+        }
+
+        public FilledPolygon2D(Polygon2D polygon, Texture texture) {
+            _zValue = 2;
+            _polygon = polygon;
+            _texture = texture;
+            _color = Color.Blue;
+        }
+
         int IRenderable.ZValue {get {return _zValue; }}
 
         bool IRenderable.DoRender {get {return true;}}
 
+        public Polygon2D Polygon {get {return _polygon; } set{_polygon = value;}}
+        public Texture Texture {get {return _texture; } set {_texture = value;}}
+        
         void IRenderable.Render(Renderer renderer) {
-
+            int i;
+            Point2D p1, p2;
+            renderer.SetColor(_color);
+            for(i = 0; i < _polygon.Count-1; i++)
+            { 
+                p1 = _polygon.Point(i);
+                p2 = _polygon.Point(i+1);
+                renderer.DrawLine((int)p1.X, (int)p1.Y ,(int)p2.X, (int)p2.Y);   
+            }
+            p1 = _polygon.Point(_polygon.Count -1 );
+            p2 = _polygon.Point(0);
+            renderer.DrawLine((int)p1.X, (int)p1.Y, (int)p2.X, (int)p2.Y);
         }
     }    
 }

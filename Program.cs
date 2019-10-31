@@ -34,8 +34,7 @@ namespace escape_aliens
             Player p1 = new Player();
 			p1.Transformation.Position.X = 300;
 			p1.Transformation.Position.Y = 300;
-            Console.WriteLine("p1 is IUpdatable = {0}.", p1 is escape_aliens.Engine.Interfaces.IUpdatable);
-			SpriteComponent sprite = new SpriteComponent(p1.Transformation, 3);
+            SpriteComponent sprite = new SpriteComponent(p1.Transformation, 3);
 			ThrustComponent thrust = new ThrustComponent(2);
 			p1.AddComponent(thrust);
 			p1.AddComponent(sprite);
@@ -61,6 +60,16 @@ namespace escape_aliens
 			game.Input.KeyboardBindings.AddMapping(SDL.SDL_Scancode.SDL_SCANCODE_A, p1.RotateLeft);
 			game.Input.KeyboardBindings.AddMapping(SDL.SDL_Scancode.SDL_SCANCODE_W, p1.Forward);
             game.AddObject(p1);
+
+            Polygon2D poly = new Polygon2D();
+            poly.AddPoint( 300, 300);
+            poly.AddPoint(600, 400);
+            poly.AddPoint(400,500);
+            Texture polyText = game.LoadTexture(""); //TODO Continues from here.
+            FilledPolygon2D filledPolygon = new FilledPolygon2D(poly);
+            Asteroid asteroid = new Asteroid();
+            asteroid.AddComponent(filledPolygon);
+            game.AddObject(asteroid);
         }
     }
 }
