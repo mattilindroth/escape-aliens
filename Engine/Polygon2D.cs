@@ -39,6 +39,24 @@ namespace escape_aliens.Engine
             _points.RemoveAt(index);
         }
 
+        public SDL2.SDL.SDL_Rect GetBoundingRectangle()
+        {
+            double minX , minY, maxX, maxY;
+            minX = _points[0].X;
+            maxX = minX;
+            minY = _points[0].Y;
+            maxY = minY;
+            for(int i = 1; i < _points.Count; i++) {
+                var p = _points[i];
+                minX = System.Math.Min(minX, p.X);
+                minY = System.Math.Min(minY, p.Y);
+                maxX = System.Math.Max(maxX, p.X);
+                maxY = System.Math.Max(maxY, p.Y);
+            }
+            
+            return new SDL2.SDL.SDL_Rect() {x = (int)minX, y = (int)minY, h = (int)(maxY - minY), w = (int)(maxX - minX)};
+        }
+
         public bool IsInside(Point2D p) {
             bool inside = false;
             for ( int i = 0, j = _points.Count - 1 ; i < _points.Count ; j = i++ )

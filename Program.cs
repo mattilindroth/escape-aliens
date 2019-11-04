@@ -65,8 +65,8 @@ namespace escape_aliens
             poly.AddPoint( 300, 300);
             poly.AddPoint(600, 400);
             poly.AddPoint(400,500);
-            Texture polyText = game.LoadTexture(""); //TODO Continues from here.
-            FilledPolygon2D filledPolygon = new FilledPolygon2D(poly);
+            Texture polyText = game.LoadTexture(@"C:\Source\escape-aliens\Resources\MapForeground.png"); 
+            FilledPolygon2D filledPolygon = new FilledPolygon2D(poly, polyText);
             Asteroid asteroid = new Asteroid();
             asteroid.AddComponent(filledPolygon);
             game.AddObject(asteroid);

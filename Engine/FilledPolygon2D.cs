@@ -1,6 +1,7 @@
 using escape_aliens.Engine.Interfaces;
-using escape_aliens.Engine;
-namespace escape_aliens
+using SDL2;
+
+namespace escape_aliens.Engine
 {
     public class FilledPolygon2D: Component, IRenderable  
     {
@@ -27,7 +28,7 @@ namespace escape_aliens
             _zValue = 2;
             _polygon = polygon;
             _texture = texture;
-            _color = Color.Blue;
+            _color = Color.Blue;            
         }
 
         int IRenderable.ZValue {get {return _zValue; }}
@@ -50,6 +51,14 @@ namespace escape_aliens
             p1 = _polygon.Point(_polygon.Count -1 );
             p2 = _polygon.Point(0);
             renderer.DrawLine((int)p1.X, (int)p1.Y, (int)p2.X, (int)p2.Y);
+        }
+
+        void FillPolygon(Renderer renderer) {
+            SDL.SDL_Rect boundingRect = _polygon.GetBoundingRectangle();
+            
+            for(int y = boundingRect.y; y < (boundingRect.y + boundingRect.h); y++) {
+                
+            }
         }
     }    
 }
