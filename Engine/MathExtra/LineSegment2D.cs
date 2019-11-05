@@ -1,4 +1,4 @@
-namespace escape_aliens.Engine
+namespace escape_aliens.Engine.MathExtra
 {
     public class LineSegment2D {
 

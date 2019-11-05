@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace escape_aliens.Engine
+namespace escape_aliens.Engine.MathExtra
 {
     public class Polygon2D 
     {

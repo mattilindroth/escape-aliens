@@ -27,6 +27,14 @@ namespace escape_aliens.Engine.MathExtra {
         public double X {get;set;}
         public double Y {get;set;} 
 
+		public CrossProduct(Vector2D another) {
+
+		}
+
+		public double AngleWith(Vector2D another) {
+			
+		}
+
         public static double operator * (Vector2D v1, Vector2D v2) {
         	double result;
 

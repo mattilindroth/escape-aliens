@@ -1,4 +1,5 @@
 using escape_aliens.Engine.Interfaces;
+using escape_aliens.Engine.MathExtra;
 using SDL2;
 
 namespace escape_aliens.Engine
