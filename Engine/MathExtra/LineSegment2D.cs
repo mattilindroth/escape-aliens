@@ -33,8 +33,15 @@ namespace escape_aliens.Engine.MathExtra
             } else if (rxs == 0 && qpxr == 0) {
                 var t0 = (q - p) * r / (r * r);
                 var t1 = t0 + (s * r)/(r * r);
+                if((s * r) < 0) {
+                    var temp = t1;
+                    t1 = t0;
+                    t0 = t1;
+                }
+
                 if((t0 >= 0 && t0 <= 1) || (t1 >= 0 && t1 <= 1)) {
-                    return something //colinear lines....
+                    var res = (s - q) * t0; 
+                    return new Point2D(res.X, res.Y); //colinear lines....
                 }
             }
             return null;
