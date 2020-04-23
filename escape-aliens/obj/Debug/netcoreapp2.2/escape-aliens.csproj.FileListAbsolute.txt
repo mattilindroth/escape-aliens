@@ -1,0 +1,10 @@
+C:\Source\escape-aliens\escape-aliens\bin\Debug\netcoreapp2.2\escape-aliens.deps.json
+C:\Source\escape-aliens\escape-aliens\bin\Debug\netcoreapp2.2\escape-aliens.runtimeconfig.json
+C:\Source\escape-aliens\escape-aliens\bin\Debug\netcoreapp2.2\escape-aliens.runtimeconfig.dev.json
+C:\Source\escape-aliens\escape-aliens\bin\Debug\netcoreapp2.2\escape-aliens.dll
+C:\Source\escape-aliens\escape-aliens\bin\Debug\netcoreapp2.2\escape-aliens.pdb
+C:\Source\escape-aliens\escape-aliens\obj\Debug\netcoreapp2.2\escape-aliens.csprojAssemblyReference.cache
+C:\Source\escape-aliens\escape-aliens\obj\Debug\netcoreapp2.2\escape-aliens.AssemblyInfoInputs.cache
+C:\Source\escape-aliens\escape-aliens\obj\Debug\netcoreapp2.2\escape-aliens.AssemblyInfo.cs
+C:\Source\escape-aliens\escape-aliens\obj\Debug\netcoreapp2.2\escape-aliens.dll
+C:\Source\escape-aliens\escape-aliens\obj\Debug\netcoreapp2.2\escape-aliens.pdb
