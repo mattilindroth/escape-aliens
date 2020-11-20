@@ -34,7 +34,7 @@ namespace escape_aliens.Engine.MathExtra
                 var t0 = (q - p) * r / (r * r);
                 var t1 = t0 + (s * r)/(r * r);
                 if((t0 >= 0 && t0 <= 1) || (t1 >= 0 && t1 <= 1)) {
-                    return something //colinear lines....
+                    return null; //colinear lines....
                 }
             }
             return null;

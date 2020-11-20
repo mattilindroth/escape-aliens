@@ -25,6 +25,14 @@ namespace escape_aliens.Engine.MathExtra
 
         public int Count { get {return _points.Count;}}
 
+        public Vector2D EdgeByIndex(int index) 
+        {
+            if(index == _points.Count)
+                return new Vector2D(_points[index].X - _points[0].X, _points[index].Y - _points[0].Y);   
+
+            return new Vector2D(_points[index].X - _points[index + 1].X, _points[index].Y - _points[index + 1].Y);           
+        }
+
         public Point2D Point(int index) 
         {
             return _points[index];

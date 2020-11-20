@@ -1,6 +1,7 @@
 ﻿using System;
 using SDL2;
 using escape_aliens.Engine;
+using escape_aliens.Engine.MathExtra;
 
 namespace escape_aliens
 {
