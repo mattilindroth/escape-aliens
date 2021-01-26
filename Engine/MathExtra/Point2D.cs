@@ -1,6 +1,6 @@
 using System;
 
-namespace escape_aliens.Engine
+namespace escape_aliens.Engine.MathExtra
 {
     public class Point2D 
     {

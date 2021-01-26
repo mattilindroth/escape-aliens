@@ -27,6 +27,12 @@ namespace escape_aliens.Engine.MathExtra {
         public double X {get;set;}
         public double Y {get;set;} 
 
+
+		public Vector2D Perpendicular() 
+		{
+			return new Vector2D(-Y, X);
+		}
+
 		public double CrossProduct(Vector2D another) {
 			return X*another.Y - Y * another.X;
 		}
@@ -39,6 +45,12 @@ namespace escape_aliens.Engine.MathExtra {
 				return Math.Acos((this * another)/denominator);
 			}
 			return double.NaN;
+		}
+
+		public void Normalize() {
+			var len = Length;
+			X = X / len;
+			Y = Y / len;
 		}
 
         public static double operator * (Vector2D v1, Vector2D v2) {

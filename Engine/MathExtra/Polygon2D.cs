@@ -10,6 +10,11 @@ namespace escape_aliens.Engine.MathExtra
             _points = new List<Point2D>();
         }
 
+        public Polygon2D(Point2D[] points) {
+            _points = new List<Point2D>();
+            _points.AddRange(points);
+        }
+
         public void AddPoint(Point2D point) {
             _points.Add(point);
         }
@@ -25,9 +30,21 @@ namespace escape_aliens.Engine.MathExtra
 
         public int Count { get {return _points.Count;}}
 
+        public Vector2D Center() 
+        {
+            double x = _points[0].X;
+            double y = _points[0].Y;
+
+            for(int i = 1; i < _points.Count; i++){
+                x = x + _points[i].X;
+                y = y + _points[i].Y;
+            }
+            return new Vector2D(x / _points.Count, y / _points.Count);
+        }
+
         public Vector2D EdgeByIndex(int index) 
         {
-            if(index == _points.Count)
+            if(index == _points.Count -1)
                 return new Vector2D(_points[index].X - _points[0].X, _points[index].Y - _points[0].Y);   
 
             return new Vector2D(_points[index].X - _points[index + 1].X, _points[index].Y - _points[index + 1].Y);           
