@@ -2,6 +2,7 @@ using System.Collections.Generic;
 
 namespace escape_aliens.Engine.MathExtra
 {
+   
     public class Polygon2D 
     {
         private List<Point2D> _points;

@@ -1,6 +1,21 @@
 using System;
 using SDL2;
 namespace escape_aliens.Engine.MathExtra {
+
+ 	///         |
+    ///    Q2   |  Q1
+    /// ----------------->
+    ///    Q3   |  Q4
+    ///         |
+    public enum eQuadrant
+	{
+            Q1,
+            Q2,
+            Q3,
+            Q4,
+			undefined,
+    }
+
     public class Vector2D {
 
 		public Vector2D() {
@@ -52,6 +67,20 @@ namespace escape_aliens.Engine.MathExtra {
 			X = X / len;
 			Y = Y / len;
 		}
+
+		public eQuadrant DetermineQuadrant() {
+            if(this.X >= 0) {
+                if(this.Y >= 0)
+                    return eQuadrant.Q1;
+                else 
+                    return eQuadrant.Q4;
+            } else {
+                if(this.Y >= 0)
+                    return eQuadrant.Q2;
+                else 
+                    return eQuadrant.Q3;
+            }
+        }
 
         public static double operator * (Vector2D v1, Vector2D v2) {
         	double result;
