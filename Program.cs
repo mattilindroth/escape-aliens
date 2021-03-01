@@ -1,15 +1,41 @@
 ﻿using System;
 using SDL2;
 using escape_aliens.Engine;
-
+using escape_aliens.Engine.MathExtra;
 namespace escape_aliens
 {
     class Program
     {
         static void Main(string[] args)
         {
-           Program prog = new Program();
-           prog.Run();
+            foreach(var arg in args) {
+                Console.WriteLine(arg);
+            }
+            Program prog = new Program();
+            if(args.Length > 1)
+            {
+                if(args[1].ToLower() == "editor") {
+                    prog.RunEditor();
+                }
+                    
+            } else 
+                prog.Run();
+        }
+
+        public void RunEditor() {
+            if(SDL.SDL_Init(SDL.SDL_INIT_VIDEO) < 0) {
+                Console.WriteLine("Unable to initialize SDL. Error: {0}", SDL.SDL_GetError());
+            }
+            var window = new GameWindow("Escape Aliens - Editor!");
+            var scene = new Scene(new Engine.Renderer(window));
+            var game = new Game(scene, new SDL2Timer());
+            var editor = new Editor.Editor(game);
+			game.Physics.Gravity.X = 0;
+			game.Physics.Gravity.Y = 0;
+
+            editor.Run();
+            
+            SDL.SDL_Quit();
         }
 
         public void Run()
@@ -32,6 +58,7 @@ namespace escape_aliens
 
         public void LoadResource(Game game) {
             Player p1 = new Player();
+                        
 			p1.Transformation.Position.X = 300;
 			p1.Transformation.Position.Y = 300;
             SpriteComponent sprite = new SpriteComponent(p1.Transformation, 3);

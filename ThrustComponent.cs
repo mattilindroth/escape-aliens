@@ -22,6 +22,7 @@ namespace escape_aliens.Engine
         private int _ZValue ;
         private bool _thrustOn;
 
+
         public ThrustComponent(int ZValue = 0) {
 
             _particles = new List<Particle>();
@@ -104,6 +105,7 @@ namespace escape_aliens.Engine
             }
         }
 
+        Transformation2D IRenderable.Transformation {get {return AttachedGameObjects[0].Transformation;}}
         bool IRenderable.DoRender
         {
             get 

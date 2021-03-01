@@ -27,6 +27,8 @@ namespace escape_aliens.Engine
 			return _scene.Renderer.LoadTexture(fileName);
 		}
 
+		public Scene Scene {get {return _scene;}}
+
 		public Physics Physics {get {return _physics;}}
 
 		public void AddObject(GameObject gameObject) 
@@ -83,6 +85,9 @@ namespace escape_aliens.Engine
 						case SDL.SDL_EventType.SDL_MOUSEBUTTONUP:
 							this.HandleMouseButtonEvent(e);
 							break;
+						case SDL.SDL_EventType.SDL_MOUSEMOTION:
+							this.HandleMouseMoveEvent(e);
+							break;
 					}
 				}
 				_scene.Render();
@@ -98,6 +103,9 @@ namespace escape_aliens.Engine
 			}
     	}
 
+		private void HandleMouseMoveEvent(SDL.SDL_Event e) {	
+			_input.MouseBindings.UpdateStateAndDispatchEvents();
+		}
 		private void HandleMouseButtonEvent(SDL.SDL_Event e) {
 			bool isDown = false;
 			eMouseButton button = eMouseButton.Any;

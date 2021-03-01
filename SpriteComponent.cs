@@ -39,6 +39,8 @@ namespace escape_aliens.Engine
                 _currentFrameIndex += 1;
         }
 
+        Transformation2D IRenderable.Transformation {get {return _transformation;}}
+        
         int IRenderable.ZValue {
             get {return _ZValue;}
         }

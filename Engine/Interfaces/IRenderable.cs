@@ -7,6 +7,7 @@ namespace escape_aliens.Engine.Interfaces
         void Render(Renderer renderer);
         int ZValue {get;}
         bool DoRender{get;}
+        Transformation2D Transformation {get;}
     }       
 }
 

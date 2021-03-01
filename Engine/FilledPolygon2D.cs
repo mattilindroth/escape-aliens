@@ -10,12 +10,14 @@ namespace escape_aliens.Engine
         private Polygon2D _polygon;
         private Texture _texture;
         private Color _color;
+        private Transformation2D _transformation;
 
         public FilledPolygon2D() {
             _zValue = 2;
             _polygon = new Polygon2D();
             _texture = null;
             _color = Color.Blue;
+            _transformation = new Transformation2D();
         }
 
         public FilledPolygon2D(Polygon2D polygon) {
@@ -23,6 +25,7 @@ namespace escape_aliens.Engine
             _polygon = polygon;
             _texture = null;
             _color = Color.Blue;
+            _transformation = new Transformation2D();
         }
 
         public FilledPolygon2D(Polygon2D polygon, Texture texture) {
@@ -30,11 +33,14 @@ namespace escape_aliens.Engine
             _polygon = polygon;
             _texture = texture;
             _color = Color.Blue;            
+            _transformation = new Transformation2D();
         }
 
         int IRenderable.ZValue {get {return _zValue; }}
 
         bool IRenderable.DoRender {get {return true;}}
+
+        Transformation2D IRenderable.Transformation {get {return _transformation;}}
 
         public Polygon2D Polygon {get {return _polygon; } set{_polygon = value;}}
         public Texture Texture {get {return _texture; } set {_texture = value;}}

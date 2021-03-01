@@ -22,6 +22,11 @@ namespace escape_aliens.Engine
             return new Texture(texture);
         }
 
+        public Rectangle2D GetWindowSize() 
+        {
+            return new Rectangle2D(0, 0, _window.GetHeight, _window.GetWidth);
+        }
+
         public void DrawPixel(int x, int y) {
             SDL.SDL_RenderDrawPoint(_renderer,x, y);
         }
@@ -29,6 +34,19 @@ namespace escape_aliens.Engine
         public void DrawLine(int x1, int y1, int x2, int y2) 
         {
             SDL.SDL_RenderDrawLine(_renderer, x1, y1, x2, y2);
+        }
+
+        public void DrawLines(Point2D[] points)
+        {
+            SDL.SDL_FPoint[] SDLPoints = new SDL.SDL_FPoint[points.Length];
+            int index = 0;
+            foreach(var p in points) {
+
+                SDLPoints[index].x = (float)p.X;
+                SDLPoints[index].y = (float)p.Y;
+
+            }
+            SDL.SDL_RenderDrawLinesF(_renderer, SDLPoints, points.Length);
         }
 
         public void DrawTexture(Texture texture, Transformation2D transformation, bool flip) 
