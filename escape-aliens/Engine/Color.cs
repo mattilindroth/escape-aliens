@@ -30,6 +30,10 @@ namespace escape_aliens.Engine
             return new Color(255,0,255,0);
         }}
 
+        public static Color Black {get {
+            return new Color(0,0,0,0);
+        }}
+
         public byte A {get;set;}
         public byte R {get;set;}
         public byte G {get;set;}

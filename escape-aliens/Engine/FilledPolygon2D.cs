@@ -1,10 +1,11 @@
 using escape_aliens.Engine.Interfaces;
 using escape_aliens.Engine.MathExtra;
+
 using SDL2;
 
 namespace escape_aliens.Engine
 {
-    public class FilledPolygon2D: Component, IRenderable  
+    public class FilledPolygon2D: Component, IRenderable
     {
         private int _zValue;
         private Polygon2D _polygon;
@@ -15,21 +16,21 @@ namespace escape_aliens.Engine
             _zValue = 2;
             _polygon = new Polygon2D();
             _texture = null;
-            _color = Color.Blue;
+            _color = Color.Black;
         }
 
         public FilledPolygon2D(Polygon2D polygon) {
             _zValue = 2;
             _polygon = polygon;
             _texture = null;
-            _color = Color.Blue;
+            _color = Color.Black;
         }
 
         public FilledPolygon2D(Polygon2D polygon, Texture texture) {
             _zValue = 2;
             _polygon = polygon;
             _texture = texture;
-            _color = Color.Blue;            
+            _color = Color.Black;            
         }
 
         int IRenderable.ZValue {get {return _zValue; }}
@@ -39,6 +40,14 @@ namespace escape_aliens.Engine
         public Polygon2D Polygon {get {return _polygon; } set{_polygon = value;}}
         public Texture Texture {get {return _texture; } set {_texture = value;}}
         
+        public void MouseMove(int x, int y, int dx, int dy) {
+            if(_polygon.IsInside(new Point2D(x, y))) {
+                _color = Color.Red;
+            } else {
+                _color = Color.Blue;
+            }
+        }
+
         void IRenderable.Render(Renderer renderer) {
             int i;
             Point2D p1, p2;

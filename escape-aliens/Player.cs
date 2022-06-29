@@ -73,5 +73,14 @@ namespace escape_aliens
             if(_rotateLeft && _rotateRight)
                 _rotateLeft = false;
         }
+
+        public void Shrink(SDL.SDL_Scancode code, bool isDown) {
+            if(isDown)
+                this.Transformation.Size = this.Transformation.Size - 0.01;
+        }
+        public void Enlarge(SDL.SDL_Scancode code, bool isDown) {
+            if(isDown)
+                this.Transformation.Size = this.Transformation.Size + 0.01;
+        }
     }
 }

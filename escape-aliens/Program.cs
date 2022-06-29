@@ -35,6 +35,7 @@ namespace escape_aliens
             Player p1 = new Player();
 			p1.Transformation.Position.X = 300;
 			p1.Transformation.Position.Y = 300;
+            p1.Transformation.Size = 1.0;
             SpriteComponent sprite = new SpriteComponent(p1.Transformation, 3);
 			ThrustComponent thrust = new ThrustComponent(2);
 			p1.AddComponent(thrust);
@@ -60,6 +61,8 @@ namespace escape_aliens
 			game.Input.KeyboardBindings.AddMapping(SDL.SDL_Scancode.SDL_SCANCODE_D, p1.RotateRight);
 			game.Input.KeyboardBindings.AddMapping(SDL.SDL_Scancode.SDL_SCANCODE_A, p1.RotateLeft);
 			game.Input.KeyboardBindings.AddMapping(SDL.SDL_Scancode.SDL_SCANCODE_W, p1.Forward);
+            game.Input.KeyboardBindings.AddMapping(SDL.SDL_Scancode.SDL_SCANCODE_KP_MINUS, p1.Shrink);
+            game.Input.KeyboardBindings.AddMapping(SDL.SDL_Scancode.SDL_SCANCODE_KP_PLUS, p1.Enlarge);
             game.AddObject(p1);
 
             Polygon2D poly = new Polygon2D();
@@ -68,6 +71,8 @@ namespace escape_aliens
             poly.AddPoint(400,500);
             Texture polyText = game.LoadTexture(@"C:\Source\escape-aliens\Resources\MapForeground.png"); 
             FilledPolygon2D filledPolygon = new FilledPolygon2D(poly, polyText);
+            game.Input.MouseBindings.RegisterMouseMovementListener(filledPolygon.MouseMove);
+
             Asteroid asteroid = new Asteroid();
             asteroid.AddComponent(filledPolygon);
             game.AddObject(asteroid);

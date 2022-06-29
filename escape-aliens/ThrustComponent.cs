@@ -62,6 +62,7 @@ namespace escape_aliens.Engine
                 b = 100,
                 a = 255,
             };
+            
             p._position.X = this.AttachedGameObjects[0].Transformation.Position.X + 45;
             p._position.Y =  this.AttachedGameObjects[0].Transformation.Position.Y + 45;
             double spd = minSdp + ((maxSpd - minSdp) * rand.NextDouble()); 

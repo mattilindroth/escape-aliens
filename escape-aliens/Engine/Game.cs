@@ -72,16 +72,17 @@ namespace escape_aliens.Engine
 							quit = true;
 							break;
 						case SDL.SDL_EventType.SDL_KEYDOWN:
-							_input.KeyboardBindings.UpdateStateAndDispatchEvents();
-							break;
 						case SDL.SDL_EventType.SDL_KEYUP:
 							_input.KeyboardBindings.UpdateStateAndDispatchEvents();
 							break;
 						case SDL.SDL_EventType.SDL_MOUSEBUTTONDOWN:
-							this.HandleMouseButtonEvent(e);
-							break;
 						case SDL.SDL_EventType.SDL_MOUSEBUTTONUP:
 							this.HandleMouseButtonEvent(e);
+							break;
+						case SDL.SDL_EventType.SDL_MOUSEMOTION:
+							int x, y;
+							SDL.SDL_GetMouseState(out x, out y);
+							_input.MouseBindings.UpdateStateAndDispatchEvents();
 							break;
 					}
 				}

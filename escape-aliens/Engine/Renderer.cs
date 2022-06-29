@@ -37,8 +37,11 @@ namespace escape_aliens.Engine
             SDL.SDL_Rect sourceRect = texture.SourceRectangle;
             SDL.SDL_Rect renderRect = texture.RenderRectangle;
             double angleDegrees = transformation.RotationRadians * _rad2deg;
-            renderRect.x = (int)transformation.Position.X;
-            renderRect.y = (int)transformation.Position.Y;
+            renderRect.w = (int)(renderRect.w * transformation.Size);
+            renderRect.h = (int)(renderRect.h * transformation.Size);
+            renderRect.x = (int)(transformation.Position.X + (renderRect.w / 2));
+            renderRect.y = (int)(transformation.Position.Y + (renderRect.h / 2));
+            
             center.x = (renderRect.w) / 2;
             center.y = (renderRect.h) / 2;
             SDL.SDL_RendererFlip renderFlip = flip ? SDL.SDL_RendererFlip.SDL_FLIP_HORIZONTAL : SDL.SDL_RendererFlip.SDL_FLIP_NONE;

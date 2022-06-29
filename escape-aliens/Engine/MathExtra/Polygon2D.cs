@@ -2,6 +2,11 @@ using System.Collections.Generic;
 
 namespace escape_aliens.Engine.MathExtra
 {
+    public class PointAndIndex {
+        public Point2D point;
+        public int index;
+    }
+
     public class Polygon2D 
     {
         private List<Point2D> _points;
@@ -57,18 +62,33 @@ namespace escape_aliens.Engine.MathExtra
             return new SDL2.SDL.SDL_Rect() {x = (int)minX, y = (int)minY, h = (int)(maxY - minY), w = (int)(maxX - minX)};
         }
 
+        public PointAndIndex GetLowestPoint() {
+            var lowest = _points[0];
+            var indexOfLowest = 0;
+            for(int i = 0; i < _points.Count; i++) {
+                if(_points[i].Y < lowest.Y) {
+                    lowest = _points[i];
+                    indexOfLowest = i;
+                }
+            }
+            return new PointAndIndex {
+                point = lowest,
+                index = indexOfLowest
+            };
+        }
+
         public bool IsInside(Point2D p) {
             bool inside = false;
-            for ( int i = 0, j = _points.Count - 1 ; i < _points.Count ; j = i++ )
+            for ( int i = 0, j = _points.Count - 1 ; i < _points.Count ; i++ )
             {
                 if ( ( _points[ i ].Y > p.Y ) != ( _points[ j ].Y > p.Y ) &&
-                    p.X < ( _points[ j ].X - _points[ i ].X ) * ( p.Y - _points[ i ].Y ) / ( _points[ j ].Y - _points[ i ].Y ) + _points[ i ].X )
+                    (p.X < ( _points[ j ].X - _points[ i ].X ) * ( p.Y - _points[ i ].Y ) / ( _points[ j ].Y - _points[ i ].Y ) + _points[ i ].X ))
                 {
                     inside = !inside;
                 }
+                j = i;
             }
             return inside;
         }       
-
     }
 }
