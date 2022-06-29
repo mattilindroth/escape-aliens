@@ -54,7 +54,7 @@ namespace escape_aliens.Engine
             double maxLifeTimeMillis = 700.0; 
             double minLifeTimeMillis = 100.0;
             double angleRads = System.Math.PI / 8; // 22,5 degs.
-
+            Transformation2D transf = this.AttachedGameObjects[0].Transformation;
             Particle p = new Particle() {
                 _position = new MathExtra.Vector2D(),
                 _speed = new MathExtra.Vector2D(),
@@ -63,8 +63,8 @@ namespace escape_aliens.Engine
                 b = 100,
                 a = 255,
             };
-            p._position.X = this.AttachedGameObjects[0].Transformation.Position.X + 45;
-            p._position.Y =  this.AttachedGameObjects[0].Transformation.Position.Y + 45;
+            p._position.X = (45 * transf.Size);
+            p._position.Y = (45 * transf.Size);
             double spd = minSdp + ((maxSpd - minSdp) * rand.NextDouble()); 
             double angle = -angleRads + (2 * angleRads * rand.NextDouble()); 
             angle = angle + this.AttachedGameObjects[0].Transformation.RotationRadians + (System.Math.PI / 2);
@@ -119,7 +119,7 @@ namespace escape_aliens.Engine
         {
             foreach(var p in _particles) {
                 renderer.SetColor(p.r, p.g, p.b, p.a);
-                renderer.DrawPixel((int)p._position.X, (int)p._position.Y);
+                renderer.DrawPixel((int)p._position.X, (int)p._position.Y, AttachedGameObjects[0].Transformation);
             }
         }
 

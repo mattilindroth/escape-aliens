@@ -6,10 +6,9 @@ namespace escape_aliens.Engine
 {
     public class Scene 
     {
-
         private Renderer _renderer;
         private List<IRenderable> _renderables;
-
+        private double _viewportZoom = 1.0d;
         public Scene(Renderer renderer) 
         {
             if(renderer == null) throw new ArgumentNullException(nameof(renderer) + " cannot be NULL");
@@ -19,13 +18,14 @@ namespace escape_aliens.Engine
             ViewPort = _renderer.GetWindowSize();
         }
 
-        public Rectangle2D WorldSize {get;set;}
-        public Rectangle2D ViewPort {get;set;}
+        public Rectangle2D<int> WorldSize {get;set;}
+        public Rectangle2D<int> ViewPort {get;set;}
 
         public Renderer Renderer {
             get {return _renderer;}
         }
 
+        public double ViewportZoom {get {return _viewportZoom;} set {_viewportZoom = value;}}
 
         public bool Contains(IRenderable renderable) {
             return _renderables.Contains(renderable);
@@ -45,7 +45,9 @@ namespace escape_aliens.Engine
             foreach(var renderable in _renderables) {
                 if(renderable.DoRender) {
                     renderable.Transformation.Position += transformationVector;
+                    renderable.Transformation.Size += ViewportZoom;
                     renderable.Render(_renderer);
+                    renderable.Transformation.Size -= ViewportZoom;
                     renderable.Transformation.Position -= transformationVector;
                 }
             }

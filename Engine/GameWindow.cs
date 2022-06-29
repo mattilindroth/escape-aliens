@@ -27,7 +27,7 @@ namespace escape_aliens.Engine
 
             _windowPtr = SDL.SDL_CreateWindow(windowCaption, 3, 27, GetWidth/2, GetHeight/2, SDL.SDL_WindowFlags.SDL_WINDOW_RESIZABLE); //SDL.SDL_WindowFlags.SDL_WINDOW_FULLSCREEN);
 
-            //_windowSurface = SDL.SDL_GetWindowSurface(_windowPtr);
+            _windowSurface = SDL.SDL_GetWindowSurface(_windowPtr);
 
         }
 
@@ -39,11 +39,14 @@ namespace escape_aliens.Engine
             }
             return renderer;
         }
-        
-        // public IntPtr WindowSurface
-        // {
-        //     get {return _windowSurface;}
-        // }
+        public IntPtr SDL_WindowSurface 
+        { 
+            get { return _windowSurface;}
+        }
+        public IntPtr SDL_Window
+        {
+            get {return _windowPtr;}
+        }
 
     }
 }

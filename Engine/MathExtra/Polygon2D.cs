@@ -38,7 +38,7 @@ namespace escape_aliens.Engine.MathExtra
         {
             _points.RemoveAt(index);
         }
-
+        
         public SDL2.SDL.SDL_Rect GetBoundingRectangle()
         {
             double minX , minY, maxX, maxY;

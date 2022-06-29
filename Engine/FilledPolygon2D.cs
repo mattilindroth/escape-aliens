@@ -1,6 +1,7 @@
 using escape_aliens.Engine.Interfaces;
 using escape_aliens.Engine.MathExtra;
 using SDL2;
+using SDL2_gfx;
 
 namespace escape_aliens.Engine
 {
@@ -8,7 +9,7 @@ namespace escape_aliens.Engine
     {
         private int _zValue;
         private Polygon2D _polygon;
-        private Texture _texture;
+        private Image _texture;
         private Color _color;
         private Transformation2D _transformation;
 
@@ -28,7 +29,7 @@ namespace escape_aliens.Engine
             _transformation = new Transformation2D();
         }
 
-        public FilledPolygon2D(Polygon2D polygon, Texture texture) {
+        public FilledPolygon2D(Polygon2D polygon, Image texture) {
             _zValue = 2;
             _polygon = polygon;
             _texture = texture;
@@ -43,21 +44,25 @@ namespace escape_aliens.Engine
         Transformation2D IRenderable.Transformation {get {return _transformation;}}
 
         public Polygon2D Polygon {get {return _polygon; } set{_polygon = value;}}
-        public Texture Texture {get {return _texture; } set {_texture = value;}}
+        public Image Texture {get {return _texture; } set {_texture = value;}}
         
         void IRenderable.Render(Renderer renderer) {
             int i;
-            Point2D p1, p2;
-            renderer.SetColor(_color);
-            for(i = 0; i < _polygon.Count-1; i++)
+            Point2D p1;
+            int[] x  = new int[_polygon.Count]; 
+            int[] y  = new int[_polygon.Count]; 
+
+            Matrix3 m = Matrix3.CreateTranslationMatrix(_transformation.Position);
+            m.Rotate(_transformation.RotationRadians);
+            m.Scale(_transformation.Size);
+            for(i = 0; i < _polygon.Count; i++)
             { 
-                p1 = _polygon.Point(i);
-                p2 = _polygon.Point(i+1);
-                renderer.DrawLine((int)p1.X, (int)p1.Y ,(int)p2.X, (int)p2.Y);   
+                p1 = m * _polygon.Point(i);
+                x[i] = (int)p1.X;
+                y[i] = (int)p1.Y;
+
             }
-            p1 = _polygon.Point(_polygon.Count -1 );
-            p2 = _polygon.Point(0);
-            renderer.DrawLine((int)p1.X, (int)p1.Y, (int)p2.X, (int)p2.Y);
+            renderer.TexturedPolygon(x, y, _texture.SDL_Surface, 0, 0);
         }
 
         void FillPolygon(Renderer renderer) {

@@ -61,6 +61,7 @@ namespace escape_aliens
                         
 			p1.Transformation.Position.X = 300;
 			p1.Transformation.Position.Y = 300;
+            p1.Transformation.Size = 0.5d;
             SpriteComponent sprite = new SpriteComponent(p1.Transformation, 3);
 			ThrustComponent thrust = new ThrustComponent(2);
 			p1.AddComponent(thrust);
@@ -92,7 +93,7 @@ namespace escape_aliens
             poly.AddPoint( 300, 300);
             poly.AddPoint(600, 400);
             poly.AddPoint(400,500);
-            Texture polyText = game.LoadTexture(@"C:\Source\escape-aliens\Resources\MapForeground.png"); 
+            Image polyText = game.LoadImage(@"C:\Source\escape-aliens\Resources\MapForeground.png"); 
             FilledPolygon2D filledPolygon = new FilledPolygon2D(poly, polyText);
             Asteroid asteroid = new Asteroid();
             asteroid.AddComponent(filledPolygon);

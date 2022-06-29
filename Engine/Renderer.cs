@@ -1,5 +1,6 @@
 using System;
 using SDL2;
+using SDL2_gfx;
 
 namespace escape_aliens.Engine 
 {
@@ -21,14 +22,27 @@ namespace escape_aliens.Engine
                 Console.WriteLine("Could not load texture. {0}", SDL.SDL_GetError());
             return new Texture(texture);
         }
-
-        public Rectangle2D GetWindowSize() 
-        {
-            return new Rectangle2D(0, 0, _window.GetHeight, _window.GetWidth);
+        
+        public Image LoadImage(string imgSource) {
+            
+            IntPtr surfacePtr = SDL_image.IMG_Load(imgSource);
+            if(surfacePtr == IntPtr.Zero) {
+                Console.WriteLine("Could not load image. {0}", SDL.SDL_GetError());
+            }
+            uint pxlFormatEnum = SDL.SDL_GetWindowPixelFormat(this._window.SDL_Window);
+            IntPtr pxlFormat = SDL.SDL_AllocFormat(pxlFormatEnum);
+            IntPtr convertedSurface = SDL.SDL_ConvertSurface(surfacePtr, pxlFormat, 0);
+            SDL.SDL_FreeSurface(surfacePtr);
+            return new Image(convertedSurface);
         }
 
-        public void DrawPixel(int x, int y) {
-            SDL.SDL_RenderDrawPoint(_renderer,x, y);
+        public Rectangle2D<int> GetWindowSize() 
+        {
+            return new Rectangle2D<int>(0, 0, _window.GetWidth, _window.GetHeight);
+        }
+
+        public void DrawPixel(int x, int y, Transformation2D transformation) {
+            SDL.SDL_RenderDrawPoint(_renderer,x + (int)transformation.Position.X, y + (int)transformation.Position.Y);
         }
 
         public void DrawLine(int x1, int y1, int x2, int y2) 
@@ -36,14 +50,25 @@ namespace escape_aliens.Engine
             SDL.SDL_RenderDrawLine(_renderer, x1, y1, x2, y2);
         }
 
-        public void DrawLines(Point2D[] points)
+        public void TexturedPolygon( int[] x, int[] y, IntPtr image, int dx, int dy)
+        {
+            Int16[] xs = new Int16[x.Length];
+            Int16[] ys = new Int16[x.Length];
+            for(int i = 0 ; i < x.Length ; i++){
+                xs[i] = (Int16)x[i];
+                ys[i] = (Int16)y[i];
+            }
+            SDL2_gfx.SDL_gfx.texturedPolygon(_renderer, xs, ys, x.Length, image, dx, dy);
+        }
+
+        public void DrawLines(Point2D[] points, Transformation2D transformation)
         {
             SDL.SDL_FPoint[] SDLPoints = new SDL.SDL_FPoint[points.Length];
             int index = 0;
             foreach(var p in points) {
 
-                SDLPoints[index].x = (float)p.X;
-                SDLPoints[index].y = (float)p.Y;
+                SDLPoints[index].x = (float)p.X * (float)transformation.Size + (float)transformation.Position.X;
+                SDLPoints[index].y = (float)p.Y * (float)transformation.Size + (float)transformation.Position.Y;
 
             }
             SDL.SDL_RenderDrawLinesF(_renderer, SDLPoints, points.Length);
@@ -55,6 +80,8 @@ namespace escape_aliens.Engine
             SDL.SDL_Rect sourceRect = texture.SourceRectangle;
             SDL.SDL_Rect renderRect = texture.RenderRectangle;
             double angleDegrees = transformation.RotationRadians * _rad2deg;
+            renderRect.w = (int)(renderRect.w * transformation.Size);
+            renderRect.h = (int)(renderRect.h * transformation.Size);
             renderRect.x = (int)transformation.Position.X;
             renderRect.y = (int)transformation.Position.Y;
             center.x = (renderRect.w) / 2;

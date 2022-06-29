@@ -11,7 +11,7 @@ namespace escape_aliens.Engine.Input
         Middle,
         Any
     }
-    public delegate void MouseMove(int x, int y, int dx, int dy);
+    public delegate void MouseMove(int x, int y, int dx, int dy, int dw);
     public delegate void MouseButtonStatusChange(eMouseButton button, bool isDown );
     public class MouseBindings {
         private List<MouseMove> _mouseMoveReceivers;
@@ -40,7 +40,7 @@ namespace escape_aliens.Engine.Input
             _mouseButtonReceivers.Remove(buttonStatusChange);
         }
 
-        internal void UpdateStateAndDispatchEvents() {
+        internal void UpdateStateAndDispatchEvents(int dw) {
             int x, y;
             SDL.SDL_GetMouseState(out x, out y);
             if(_prevMouseY < 0 || _prevMouseX < 0) {
@@ -48,16 +48,16 @@ namespace escape_aliens.Engine.Input
                 _prevMouseX = x;
                 return;
             }
-            if((_prevMouseX - x) != 0 || (_prevMouseY - y) != 0) {
-                DispatchMouseMovement(x, y);
+            if((_prevMouseX - x) != 0 || (_prevMouseY - y) != 0 || dw != 0) {
+                DispatchMouseMovement(x, y, dw);
                 _prevMouseX = x;
                 _prevMouseY = y;
             }
         }
 
-        private void DispatchMouseMovement(int x, int y) {
+        private void DispatchMouseMovement(int x, int y, int dw) {
             foreach(var receiver in _mouseMoveReceivers) {
-                receiver.Invoke( x, y, _prevMouseX - x, _prevMouseY - y);
+                receiver.Invoke( x, y, _prevMouseX - x, _prevMouseY - y, dw);
             }
         }
 

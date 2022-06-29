@@ -2,6 +2,7 @@ using System;
 using SDL2;
 using escape_aliens.Engine.Input;
 using escape_aliens.Engine.Interfaces;
+using escape_aliens.Editor;
 
 namespace escape_aliens.Engine
 {
@@ -14,17 +15,47 @@ namespace escape_aliens.Engine
 		private Updater _updater;
 		private Physics _physics;
 
-    	public Game(Scene scene, ITimer timer) 
+		private eEditorMouseMode _editorMouseMode;
+
+		public Game(Scene scene, ITimer timer) 
     	{
 			_scene = scene;
 			_timer = timer;
 			_input = new Input.Input();
 			_updater = new Updater();
 			_physics = new Physics();
-    	}
+			_input.MouseBindings.RegisterMouseMovementListener(this.MouseMove);
+			_input.MouseBindings.RegisterMouseButtonListener(this.MouseButtonStatusChange);
+		}
 
 		public Texture LoadTexture(string fileName) {
 			return _scene.Renderer.LoadTexture(fileName);
+		}
+		public Image LoadImage(string filename)
+		{
+			return _scene.Renderer.LoadImage(filename);
+		}
+		public void MouseButtonStatusChange(eMouseButton button, bool isDown)
+		{
+			if (isDown)
+			{
+				if (button == eMouseButton.Left)
+				{
+					_editorMouseMode = eEditorMouseMode.MoveViewport;
+				}
+			}
+			else
+			{
+				_editorMouseMode = eEditorMouseMode.None;
+			}
+		}
+		public void MouseMove(int x, int y, int dx, int dy, int dw)
+		{
+			if (_editorMouseMode == eEditorMouseMode.MoveViewport)
+			{
+				_scene.ViewPort.X -= dx;
+				_scene.ViewPort.Y -= dy;
+			}
 		}
 
 		public Scene Scene {get {return _scene;}}
@@ -79,6 +110,9 @@ namespace escape_aliens.Engine
 						case SDL.SDL_EventType.SDL_KEYUP:
 							_input.KeyboardBindings.UpdateStateAndDispatchEvents();
 							break;
+						case SDL.SDL_EventType.SDL_MOUSEWHEEL:
+							this.HandleMouseWheelEvent(e);
+							break;
 						case SDL.SDL_EventType.SDL_MOUSEBUTTONDOWN:
 							this.HandleMouseButtonEvent(e);
 							break;
@@ -102,9 +136,11 @@ namespace escape_aliens.Engine
 				_updater.UpdateObjects(elapsedMillisecods);
 			}
     	}
-
+		private void HandleMouseWheelEvent(SDL.SDL_Event e) {
+			_input.MouseBindings.UpdateStateAndDispatchEvents(e.wheel.y);
+		}
 		private void HandleMouseMoveEvent(SDL.SDL_Event e) {	
-			_input.MouseBindings.UpdateStateAndDispatchEvents();
+			_input.MouseBindings.UpdateStateAndDispatchEvents(0);
 		}
 		private void HandleMouseButtonEvent(SDL.SDL_Event e) {
 			bool isDown = false;
