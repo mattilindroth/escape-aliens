@@ -48,9 +48,21 @@ namespace escape_aliens.Engine
             }
         }
 
+        void IRenderable.Render(Renderer renderer)
+        {
+            const int MAX_POLY_CORNERS = 100;
+            int  nodes, pixelX, pixelY, i, j, swap ;
+            int[] nodeX = new int[MAX_POLY_CORNERS];
 
-        void IRenderable.Render(Renderer renderer) {
-            int i;
+            var boundingRect = _polygon.GetBoundingRectangle();
+            int IMAGE_TOP = boundingRect.y;
+            int IMAGE_BOTTOM = boundingRect.y + boundingRect.h;
+            int IMAGE_LEFT = boundingRect.x;
+            int IMAGE_RIGHT = boundingRect.x + boundingRect.w;
+
+            renderer.SetColor(_color);
+
+            //Draw the bounding lines
             Point2D p1, p2;
             renderer.SetColor(_color);
 
@@ -65,39 +77,75 @@ namespace escape_aliens.Engine
             p2 = _polygon.Point(0);
             renderer.DrawLine((int)p1.X, (int)p1.Y, (int)p2.X, (int)p2.Y);
 
-            //Draw the inside of the polygon
-            var boundingRect = _polygon.GetBoundingRectangle();
 
-            int x1, y1; //The running X for each line
-            // int x = (int)lowestPointAndIndex.point.X; 
-            // int y = (int)lowestPointAndIndex.point.Y;
-            // int currentIndex = lowestPointAndIndex.index; //Index of current poly point
-            // Point2D currentPoint = lowestPointAndIndex.point; //Current point
+            // //  Loop through the rows of the image.
+            // for (pixelY=IMAGE_TOP; pixelY<IMAGE_BOT; pixelY++) {
+            for (pixelY = IMAGE_TOP; pixelY < IMAGE_BOTTOM; pixelY++)
+            {
+                //  Build a list of nodes.
+                nodes = 0; j =_polygon.Count - 1;
+                for (i = 0; i < _polygon.Count; i++) {
+                    if (_polygon.Point(i).Y < (double) pixelY && _polygon.Point(j).Y >= (double) pixelY
+                        ||  _polygon.Point(j).Y < (double) pixelY && _polygon.Point(i).Y >= (double) pixelY) {
+                        nodeX[nodes++]=(int) (_polygon.Point(i).X + (pixelY - _polygon.Point(i).Y) / (_polygon.Point(j).Y - _polygon.Point(i).Y) * (_polygon.Point(j).X - _polygon.Point(i).X)); 
+                    }
+                j = i; 
+                }
+                //  Sort the nodes, via a simple “Bubble” sort.
+                i = 0;
+                while (i < nodes - 1) {
+                if (nodeX[i]>nodeX[i+1]) {
+                    swap=nodeX[i]; nodeX[i]=nodeX[i+1]; nodeX[i+1]=swap; 
+                    if (i != 0) i--; 
+                }
+                else {
+                  i++; 
+                }
+            }
 
-            // int nextIndex = (currentIndex + 1) >= _polygon.Count ?  0: currentIndex + 1; //Index of next poly point
-            // Point2D nextPoint = _polygon.Point(nextIndex); //Next poly point
-            
-            // //How much do we need to move x-wise if we move vertical 
-            // float dx = (float)((currentPoint.Y - nextPoint.Y) == 0 ? 0: (x - nextPoint.X) / (currentPoint.Y - nextPoint.Y));
-            //Loop
-            for (y1 = boundingRect.y; y1 < (boundingRect.y + boundingRect.h); y1++) {
-                for (x1 = boundingRect.x; x1 < (boundingRect.x + boundingRect.w); x1++)
-                {
-                    if(_polygon.IsInside(new Point2D(x1, y1)))
-                        renderer.DrawPixel(x1, y1);
-                     
-                    // if(y >= nextPoint.Y) { //If we go beying the next point Y boundary, we must do some action
-                    //     nextIndex = (nextIndex + 1) >= _polygon.Count ?  0: nextIndex + 1;// calculate the next index and current index again
-                    //     currentIndex = (currentIndex + 1) >= _polygon.Count ? 0 : currentIndex + 1;
-                    //     nextPoint = _polygon.Point(nextIndex);
-                    //     currentPoint = _polygon.Point(currentIndex);
-                    //     x = (int)nextPoint.X; //Set the starting point
-                    //     //Calculate new dx
-                    //     dx = (float)((currentPoint.Y - nextPoint.Y) == 0 ? 0: (x - nextPoint.X) / (currentPoint.Y - nextPoint.Y));
+              //  Fill the pixels between node pairs.
+                for ( i = 0; i < nodes; i += 2) {
+                    if(nodeX[i  ] >= IMAGE_RIGHT) break;
+                    if(nodeX[i+1] > IMAGE_LEFT ) {
+                        if(nodeX[i  ] < IMAGE_LEFT ) nodeX[i] = IMAGE_LEFT ;
+                        if(nodeX[i+1] > IMAGE_RIGHT) nodeX[i+1] = IMAGE_RIGHT;
+                        for (pixelX = nodeX[i]; pixelX < nodeX[i + 1]; pixelX++) 
+                            renderer.DrawPixel(pixelX,pixelY); 
+                    }
                 }
             }
             
         }
+
+        // void IRenderable.Render(Renderer renderer) {
+        //     int i;
+        //     Point2D p1, p2;
+        //     renderer.SetColor(_color);
+
+        //     //Draw the outline of the polygon
+        //     for(i = 0; i < _polygon.Count-1; i++)
+        //     { 
+        //         p1 = _polygon.Point(i);
+        //         p2 = _polygon.Point(i+1);
+        //         renderer.DrawLine((int)p1.X, (int)p1.Y ,(int)p2.X, (int)p2.Y);   
+        //     }
+        //     p1 = _polygon.Point(_polygon.Count -1 );
+        //     p2 = _polygon.Point(0);
+        //     renderer.DrawLine((int)p1.X, (int)p1.Y, (int)p2.X, (int)p2.Y);
+
+        //     //Draw the inside of the polygon
+        //     var boundingRect = _polygon.GetBoundingRectangle();
+
+        //     int x1, y1; 
+        //     for (y1 = boundingRect.y; y1 < (boundingRect.y + boundingRect.h); y1++) {
+        //         for (x1 = boundingRect.x; x1 < (boundingRect.x + boundingRect.w); x1++)
+        //         {
+        //             if(_polygon.IsInside(new Point2D(x1, y1)))
+        //                 renderer.DrawPixel(x1, y1);
+        //         }
+        //     }
+            
+        // }
 
         void FillPolygon(Renderer renderer) {
             SDL.SDL_Rect boundingRect = _polygon.GetBoundingRectangle();

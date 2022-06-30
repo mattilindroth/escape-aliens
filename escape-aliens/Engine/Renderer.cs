@@ -6,13 +6,21 @@ namespace escape_aliens.Engine
     public class Renderer 
     {
         private GameWindow _window;
-        // private IntPtr _screenSurface;
         private IntPtr _renderer; 
         private const double _rad2deg = (180.0f / System.Math.PI);
         public Renderer(GameWindow window) 
         {
             _window = window;
             _renderer = window.CreateRenderer();
+            if(IMG_INIT_PNG != SDL_image.IMG_Init(IMG_INIT_PNG) )
+            {
+                Console.Writeline("Error initializing SDL_IMG");
+            }
+        }
+
+        public IntPtr LoadSurface(string imgSource) {
+            IntPtr SDLsurface = IMG_Load( imgSource );
+            return SDLsurface;
         }
 
         public Texture LoadTexture(string imgSource) {
