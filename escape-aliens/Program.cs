@@ -66,9 +66,11 @@ namespace escape_aliens
             game.AddObject(p1);
 
             Polygon2D poly = new Polygon2D();
-            poly.AddPoint( 300, 300);
-            poly.AddPoint(600, 400);
+            poly.AddPoint(300, 300);
+            poly.AddPoint(450, 350);
+            poly.AddPoint(600, 300);
             poly.AddPoint(400,500);
+            
             Texture polyText = game.LoadTexture(@"C:\Source\escape-aliens\Resources\MapForeground.png"); 
             FilledPolygon2D filledPolygon = new FilledPolygon2D(poly, polyText);
             game.Input.MouseBindings.RegisterMouseMovementListener(filledPolygon.MouseMove);

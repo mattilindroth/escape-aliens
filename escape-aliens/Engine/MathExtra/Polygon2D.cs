@@ -2,11 +2,6 @@ using System.Collections.Generic;
 
 namespace escape_aliens.Engine.MathExtra
 {
-    public class PointAndIndex {
-        public Point2D point;
-        public int index;
-    }
-
     public class Polygon2D 
     {
         private List<Point2D> _points;
@@ -60,21 +55,6 @@ namespace escape_aliens.Engine.MathExtra
             }
             
             return new SDL2.SDL.SDL_Rect() {x = (int)minX, y = (int)minY, h = (int)(maxY - minY), w = (int)(maxX - minX)};
-        }
-
-        public PointAndIndex GetLowestPoint() {
-            var lowest = _points[0];
-            var indexOfLowest = 0;
-            for(int i = 0; i < _points.Count; i++) {
-                if(_points[i].Y < lowest.Y) {
-                    lowest = _points[i];
-                    indexOfLowest = i;
-                }
-            }
-            return new PointAndIndex {
-                point = lowest,
-                index = indexOfLowest
-            };
         }
 
         public bool IsInside(Point2D p) {

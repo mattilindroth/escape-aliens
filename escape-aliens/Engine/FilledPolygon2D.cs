@@ -48,10 +48,13 @@ namespace escape_aliens.Engine
             }
         }
 
+
         void IRenderable.Render(Renderer renderer) {
             int i;
             Point2D p1, p2;
             renderer.SetColor(_color);
+
+            //Draw the outline of the polygon
             for(i = 0; i < _polygon.Count-1; i++)
             { 
                 p1 = _polygon.Point(i);
@@ -61,6 +64,39 @@ namespace escape_aliens.Engine
             p1 = _polygon.Point(_polygon.Count -1 );
             p2 = _polygon.Point(0);
             renderer.DrawLine((int)p1.X, (int)p1.Y, (int)p2.X, (int)p2.Y);
+
+            //Draw the inside of the polygon
+            var boundingRect = _polygon.GetBoundingRectangle();
+
+            int x1, y1; //The running X for each line
+            // int x = (int)lowestPointAndIndex.point.X; 
+            // int y = (int)lowestPointAndIndex.point.Y;
+            // int currentIndex = lowestPointAndIndex.index; //Index of current poly point
+            // Point2D currentPoint = lowestPointAndIndex.point; //Current point
+
+            // int nextIndex = (currentIndex + 1) >= _polygon.Count ?  0: currentIndex + 1; //Index of next poly point
+            // Point2D nextPoint = _polygon.Point(nextIndex); //Next poly point
+            
+            // //How much do we need to move x-wise if we move vertical 
+            // float dx = (float)((currentPoint.Y - nextPoint.Y) == 0 ? 0: (x - nextPoint.X) / (currentPoint.Y - nextPoint.Y));
+            //Loop
+            for (y1 = boundingRect.y; y1 < (boundingRect.y + boundingRect.h); y1++) {
+                for (x1 = boundingRect.x; x1 < (boundingRect.x + boundingRect.w); x1++)
+                {
+                    if(_polygon.IsInside(new Point2D(x1, y1)))
+                        renderer.DrawPixel(x1, y1);
+                     
+                    // if(y >= nextPoint.Y) { //If we go beying the next point Y boundary, we must do some action
+                    //     nextIndex = (nextIndex + 1) >= _polygon.Count ?  0: nextIndex + 1;// calculate the next index and current index again
+                    //     currentIndex = (currentIndex + 1) >= _polygon.Count ? 0 : currentIndex + 1;
+                    //     nextPoint = _polygon.Point(nextIndex);
+                    //     currentPoint = _polygon.Point(currentIndex);
+                    //     x = (int)nextPoint.X; //Set the starting point
+                    //     //Calculate new dx
+                    //     dx = (float)((currentPoint.Y - nextPoint.Y) == 0 ? 0: (x - nextPoint.X) / (currentPoint.Y - nextPoint.Y));
+                }
+            }
+            
         }
 
         void FillPolygon(Renderer renderer) {
