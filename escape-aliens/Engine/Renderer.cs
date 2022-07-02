@@ -12,23 +12,68 @@ namespace escape_aliens.Engine
         {
             _window = window;
             _renderer = window.CreateRenderer();
-            if(IMG_INIT_PNG != SDL_image.IMG_Init(IMG_INIT_PNG) )
+            if((int)SDL_image.IMG_InitFlags.IMG_INIT_PNG != SDL_image.IMG_Init(SDL_image.IMG_InitFlags.IMG_INIT_PNG))
             {
-                Console.Writeline("Error initializing SDL_IMG");
+                Console.WriteLine("Error initializing SDL_IMG");
             }
         }
 
-        public IntPtr LoadSurface(string imgSource) {
-            IntPtr SDLsurface = IMG_Load( imgSource );
+        internal int WindowWidth {get {return _window.GetWidth;}}
+        internal int WindowHeight {get {return _window.GetHeight;}}
+
+        private IntPtr LoadSurface(string imgSource) {
+            IntPtr SDLsurface = SDL_image.IMG_Load( imgSource );
             return SDLsurface;
         }
 
-        public Texture LoadTexture(string imgSource) {
+        public Texture LoadTexture(string imgSource, bool createBitmap) {
             IntPtr texture = SDL_image.IMG_LoadTexture(_renderer, imgSource);
+            System.Drawing.Bitmap bitmap = null;
             if(texture == IntPtr.Zero)
                 Console.WriteLine("Could not load texture. {0}", SDL.SDL_GetError());
-            return new Texture(texture);
+            if (createBitmap)
+                bitmap = new System.Drawing.Bitmap(imgSource);
+            // if(createSurface) {
+            //     surface = LoadSurface( imgSource );
+            // }
+            return new Texture(texture, bitmap);
         }
+
+        // public Color GetSurfacePixelColor(IntPtr surface, int x, int y) {
+        //     var surfStruct = System.Marshal.PtrToStructure(surface, typeof(SDL_Surface));
+        //     var pixelFormat = System.Marshal.PtrToStructure(surfStruct.format, typeof(SDL_PixelFormat));
+
+        //     int bpp = pixelFormat.BytesPerPixel;
+            
+        //     /* Here p is the address to the pixel we want to retrieve */
+        //     int p = surfStruct.pixels + y * surfStruct.pitch + x * bpp;
+
+        //     switch (bpp)
+        //     {
+        //         case 1:
+        //             return *p;
+        //             break;
+
+        //         case 2:
+        //             return *(Uint16 *)p;
+        //             break;
+
+        //         case 3:
+        //             if (SDL_BYTEORDER == SDL_BIG_ENDIAN)
+        //                 return p[0] << 16 | p[1] << 8 | p[2];
+        //             else
+        //                 return p[0] | p[1] << 8 | p[2] << 16;
+        //             break;
+
+        //         case 4:
+        //             return *(Uint32 *)p;
+        //             break;
+
+        //         default:
+        //             return 0;       /* shouldn't happen, but avoids warnings */
+        //     }
+        // }
+        
 
         public void DrawPixel(int x, int y) {
             SDL.SDL_RenderDrawPoint(_renderer,x, y);

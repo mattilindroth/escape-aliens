@@ -41,7 +41,7 @@ namespace escape_aliens
 			p1.AddComponent(thrust);
 			p1.AddComponent(sprite);
 			thrust.GenerateParticles(600);
-			Texture texture = game.LoadTexture(@"C:\Source\escape-aliens\Resources\SpaceShipRed.png");
+			Texture texture = game.LoadTexture(@"C:\Source\escape-aliens\Resources\SpaceShipRed.png", false);
 			SDL.SDL_Rect renderRect;
 			SDL.SDL_Rect sourceRect;
 			renderRect.x = 0;
@@ -66,12 +66,14 @@ namespace escape_aliens
             game.AddObject(p1);
 
             Polygon2D poly = new Polygon2D();
-            poly.AddPoint(300, 300);
-            poly.AddPoint(450, 350);
-            poly.AddPoint(600, 300);
-            poly.AddPoint(400,500);
+            poly.AddPoint(0, 0);
+            poly.AddPoint(100,100);
+            poly.AddPoint(300, 100);
+            // poly.AddPoint(game.Scene.Renderer.WindowWidth, 0);
+            // poly.AddPoint(game.Scene.Renderer.WindowWidth, game.Scene.Renderer.WindowHeight);
+            // poly.AddPoint(0,game.Scene.Renderer.WindowHeight);
             
-            Texture polyText = game.LoadTexture(@"C:\Source\escape-aliens\Resources\MapForeground.png"); 
+            Texture polyText = game.LoadTexture(@"C:\Source\escape-aliens\Resources\MapForeground.png", true); 
             FilledPolygon2D filledPolygon = new FilledPolygon2D(poly, polyText);
             game.Input.MouseBindings.RegisterMouseMovementListener(filledPolygon.MouseMove);
 

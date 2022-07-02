@@ -6,14 +6,25 @@ namespace escape_aliens.Engine
     public class Texture 
     {
         IntPtr _sdlTexture;
-        IntPtr _sdlSurface;
+        int _bitmapWidth, _bitmapHeight;
+        Color[,] _bitmap;
 
         SDL.SDL_Rect _sourceRectangle;
         SDL.SDL_Rect _renderRectangle;
 
-        public Texture(IntPtr texture, IntPtr surface) {
+        public Texture(IntPtr texture, System.Drawing.Bitmap bitmap) {
             _sdlTexture = texture;
-            _sdlSurface = surface;
+            if(bitmap != null) {
+                _bitmap = new Color[bitmap.Width,bitmap.Height];
+                _bitmapWidth = bitmap.Width;
+                _bitmapHeight = bitmap.Height;
+                for(int x = 0; x < bitmap.Width; x++) {
+                    for (int y = 0; y < bitmap.Height; y++) {
+                        System.Drawing.Color c = bitmap.GetPixel(x, y);
+                        _bitmap[x, y] = new Color(c.A, c.R, c.G, c.B);
+                    }
+                }
+            }
         }     
 
         public IntPtr SDLTexture
@@ -32,10 +43,13 @@ namespace escape_aliens.Engine
             set {_sourceRectangle = value;}
         }
 
-        public IntPtr SDLSurface
+        public int BitmapWidth { get {return _bitmapWidth;}}
+        public int BitmapHeight { get {return _bitmapHeight;}}
+        
+        public Color[,] BitmapColorArray
         {
-            get {return _sdlSurface;}
-            set {_sdlSurface = value;}
+            get {return _bitmap;}
+            set {_bitmap = value;}
         }
 
     }    

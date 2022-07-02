@@ -109,8 +109,16 @@ namespace escape_aliens.Engine
                     if(nodeX[i+1] > IMAGE_LEFT ) {
                         if(nodeX[i  ] < IMAGE_LEFT ) nodeX[i] = IMAGE_LEFT ;
                         if(nodeX[i+1] > IMAGE_RIGHT) nodeX[i+1] = IMAGE_RIGHT;
-                        for (pixelX = nodeX[i]; pixelX < nodeX[i + 1]; pixelX++) 
+                        for (pixelX = nodeX[i]; pixelX < nodeX[i + 1]; pixelX++) {
+                            int imageX = pixelX, imageY = pixelY;
+                            if(pixelX >= _texture.BitmapWidth)
+                                imageX = pixelX - (((int)(pixelX / _texture.BitmapWidth)) * _texture.BitmapWidth);
+                            if(pixelY >= _texture.BitmapHeight)
+                                imageY = pixelY - (((int)(pixelY / _texture.BitmapHeight)) * _texture.BitmapHeight);
+                            Color c = _texture.BitmapColorArray[imageX, imageY];
+                            renderer.SetColor(c.A, c.R, c.G, c.B);
                             renderer.DrawPixel(pixelX,pixelY); 
+                        }
                     }
                 }
             }

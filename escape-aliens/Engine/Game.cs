@@ -23,11 +23,14 @@ namespace escape_aliens.Engine
 			_physics = new Physics();
     	}
 
-		public Texture LoadTexture(string fileName) {
-			return _scene.Renderer.LoadTexture(fileName);
+		
+		public Texture LoadTexture(string fileName, bool createSurface) {
+			return _scene.Renderer.LoadTexture(fileName, createSurface);
 		}
 
 		public Physics Physics {get {return _physics;}}
+
+		public Scene Scene {get {return _scene;}}
 
 		public void AddObject(GameObject gameObject) 
 		{
